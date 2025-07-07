@@ -1,470 +1,98 @@
 <!DOCTYPE html>
-<html lang="pt" class="scroll-smooth">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dossier de Patrocínio | Sport Algés e Dafundo</title>
+    <title>Dashboard de Gestão de Patrocínios | SAD</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8f9fa; /* Light Gray Background */
-            color: #343a40; /* Dark Gray Text */
+            background-color: #f1f5f9; /* Slate 100 */
         }
-        .container {
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 1rem;
-        }
-        .section-title {
-            color: #0d3b66; /* Deep Blue */
-            font-weight: 900;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-        .card {
-            background-color: #ffffff;
+        .nav-button {
+            background-color: #3b82f6; /* Blue 500 */
+            color: white;
             border-radius: 0.75rem;
-            padding: 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
-        }
-        .kpi-card {
-            background-color: #f0f4f8; /* Very Light Blue */
-            border-radius: 0.5rem;
-            padding: 1rem;
-            text-align: center;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        .kpi-number {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: #d4a373; /* Gold Accent */
-        }
-        .kpi-label {
-            font-size: 0.9rem;
-            color: #3c6e71; /* Tealish Blue */
-            margin-top: 0.25rem;
-        }
-        .nav-link {
-            transition: color 0.3s, border-bottom-color 0.3s;
-            border-bottom: 2px solid transparent;
-        }
-        .nav-link:hover, .nav-link.active {
-            color: #d4a373; /* Gold Accent */
-            border-bottom-color: #d4a373;
-        }
-        .package-header {
-            background-color: #e9ecef;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            font-weight: bold;
-            text-align: center;
-            color: #495057;
-        }
-        .checkbox-cell {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease-in-out;
             text-align: center;
         }
-        .checkbox-cell input[type="checkbox"] {
-            transform: scale(1.2);
-            accent-color: #0d3b66;
-        }
-        .category-title {
-            background-color: #f0f4f8;
-            padding: 0.5rem 1rem;
-            font-weight: bold;
-            color: #0d3b66;
-            text-align: left;
+        .nav-button:hover {
+            transform: translateY(-5px);
+            background-color: #2563eb; /* Blue 600 */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="text-slate-800">
 
-    <nav class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
-        <div class="container mx-auto px-4">
-            <div class="flex justify-between items-center py-4 flex-wrap gap-2">
-                <div class="font-bold text-lg text-[#0d3b66]">Sport Algés e Dafundo</div>
-                <div class="flex flex-wrap gap-x-6 gap-y-2 text-sm md:text-base">
-                    <a href="#intro" class="nav-link font-semibold text-gray-600">Início</a>
-                    <a href="#about" class="nav-link font-semibold text-gray-600">O Clube</a>
-                    <a href="#project" class="nav-link font-semibold text-gray-600">O Projeto</a>
-                    <a href="#audience" class="nav-link font-semibold text-gray-600">Audiência</a>
-                    <a href="#categories" class="nav-link font-semibold text-gray-600">Categorias</a>
-                    <a href="#counterparts" class="nav-link font-semibold text-gray-600">Contrapartidas</a>
-                    <a href="#benefits" class="nav-link font-semibold text-gray-600">Vantagens</a>
-                    <a href="#governance" class="nav-link font-semibold text-gray-600">Governança</a>
-                    <a href="#participation" class="nav-link font-semibold text-gray-600">Participar</a>
-                    <a href="#contacts" class="nav-link font-semibold text-gray-600">Contactos</a>
-                </div>
+    <div class="container mx-auto px-6 py-12">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-black uppercase text-slate-900">Dashboard de Gestão</h1>
+            <p class="mt-3 max-w-2xl mx-auto text-lg text-slate-600">Acesso rápido e centralizado a todas as plataformas e documentos do projeto de patrocínios do Sport Algés e Dafundo.</p>
+        </header>
+
+        <main>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <a href="https://goncaloromao95.github.io/SAD/" target="_blank" rel="noopener noreferrer" class="nav-button block p-6">
+                    <h2 class="font-bold text-xl text-white">HOME</h2>
+                    <p class="text-sm text-blue-100 mt-1">Página principal do projeto.</p>
+                </a>
+
+                <a href="https://goncaloromao95.github.io/SAD/analise-valor-contrapartidas.html" target="_blank" rel="noopener noreferrer" class="nav-button block p-6">
+                    <h2 class="font-bold text-xl text-white">Valor Contrapartidas</h2>
+                    <p class="text-sm text-blue-100 mt-1">Análise detalhada do valor de cada contrapartida.</p>
+                </a>
+                
+                <a href="https://goncaloromao95.github.io/SAD/estudo-mercado.html" target="_blank" rel="noopener noreferrer" class="nav-button block p-6">
+                    <h2 class="font-bold text-xl text-white">Estudo de Mercado</h2>
+                    <p class="text-sm text-blue-100 mt-1">Pesquisa e análise do mercado de patrocínios.</p>
+                </a>
+                
+                <a href="https://goncaloromao95.github.io/SAD/guia-interno.html" target="_blank" rel="noopener noreferrer" class="nav-button block p-6">
+                    <h2 class="font-bold text-xl text-white">Guia Interno - Negociação</h2>
+                    <p class="text-sm text-blue-100 mt-1">Manual de boas práticas para a equipa comercial.</p>
+                </a>
+                
+                <a href="https://goncaloromao95.github.io/SAD/perfil-patrocinador.html" target="_blank" rel="noopener noreferrer" class="nav-button block p-6">
+                    <h2 class="font-bold text-xl text-white">Perfil do Patrocinador</h2>
+                    <p class="text-sm text-blue-100 mt-1">Análise dos setores e empresas-alvo.</p>
+                </a>
+
+                <a href="https://goncaloromao95.github.io/SAD/plataforma-mkt.html" target="_blank" rel="noopener noreferrer" class="nav-button block p-6">
+                    <h2 class="font-bold text-xl text-white">Plataforma Publicidade SAD</h2>
+                    <p class="text-sm text-blue-100 mt-1">Apresentação da proposta de valor comercial.</p>
+                </a>
+
+                <a href="https://goncaloromao95.github.io/SAD/roi.html" target="_blank" rel="noopener noreferrer" class="nav-button block p-6">
+                    <h2 class="font-bold text-xl text-white">Métricas de ROO/ROI</h2>
+                    <p class="text-sm text-blue-100 mt-1">Avaliação e controlo de retorno do investimento.</p>
+                </a>
+
+                <a href="https://goncaloromao95.github.io/SAD/slicing-contrapartidas.html" target="_blank" rel="noopener noreferrer" class="nav-button block p-6">
+                    <h2 class="font-bold text-xl text-white">Slicing Contrapartidas</h2>
+                    <p class="text-sm text-blue-100 mt-1">Decomposição e combinação de pacotes.</p>
+                </a>
+
+                <a href="https://goncaloromao95.github.io/SAD/dossier-patrocinio.html" target="_blank" rel="noopener noreferrer" class="nav-button block p-6">
+                    <h2 class="font-bold text-xl text-white">Dossier de Patrocínios SAD</h2>
+                    <p class="text-sm text-blue-100 mt-1">Documento de apresentação oficial para patrocinadores.</p>
+                </a>
+
             </div>
-        </div>
-    </nav>
+        </main>
 
-    <main class="container py-8">
+        <footer class="text-center mt-12 text-slate-500 text-sm">
+            <p>&copy; 2025 Sport Algés e Dafundo. Todos os direitos reservados.</p>
+        </footer>
 
-        <section id="intro" class="text-center py-16 mb-12">
-            <h1 class="text-4xl md:text-6xl font-black text-[#0d3b66] mb-4">Dossier de Patrocínio</h1>
-            <h2 class="text-xl md:text-3xl font-bold text-[#3c6e71]">Sport Algés e Dafundo: Invista no Legado. Apoie o Futuro.</h2>
-            <p class="text-gray-700 max-w-3xl mx-auto mt-6 text-lg">Descubra uma oportunidade única de associar a sua marca a um clube com uma história centenária, um legado olímpico e um profundo impacto na comunidade de Algés e Oeiras.</p>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-4xl mx-auto mt-12">
-                <div class="kpi-card">
-                    <div class="kpi-number">1915</div>
-                    <div class="kpi-label">Fundação</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-number">2000+</div>
-                    <div class="kpi-label">Atletas & Sócios</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-number">55</div>
-                    <div class="kpi-label">Atletas Olímpicos</div>
-                </div>
-                <div class="kpi-card">
-                    <div class="kpi-number">45K+</div>
-                    <div class="kpi-label">Seguidores Sociais</div>
-                </div>
-            </div>
-            <p class="text-gray-700 max-w-3xl mx-auto mt-8 text-lg font-semibold">Juntos, podemos construir um futuro de sucesso e impacto duradouro.</p>
-        </section>
+    </div>
 
-        <section id="about" class="mb-12">
-            <h2 class="text-2xl md:text-3xl section-title">O Clube: História, Valores e Missão</h2>
-            <div class="card p-6">
-                <p class="text-gray-700 mb-4">Fundado em 1915, o Sport Algés e Dafundo (SAD) é uma das mais prestigiadas instituições desportivas de Portugal. Com mais de um século de história, o clube é reconhecido pelo seu legado olímpico, tendo formado 47 atletas que representaram Portugal nos Jogos Olímpicos, conquistando inclusivamente uma medalha de bronze.</p>
-                <p class="text-gray-700 mb-4">A nossa missão vai além da excelência desportiva: somos um pilar na comunidade de Algés e Oeiras, com estatuto de utilidade pública. Promovemos o desenvolvimento humano e social através do desporto, com um foco especial na formação de jovens e no pioneirismo do desporto feminino desde 1918.</p>
-                <p class="text-gray-700">Com cerca de 2000 atletas e 2000 sócios ativos, o SAD oferece uma vasta gama de modalidades, incluindo Natação, Polo Aquático, Ginástica Rítmica e Acrobática, Judo, Basquetebol e Vela, proporcionando um ambiente familiar e de alta performance.</p>
-            </div>
-        </section>
-
-        <section id="project" class="mb-12">
-            <h2 class="text-2xl md:text-3xl section-title">O Projeto: Visão e Impacto</h2>
-            <div class="card p-6">
-                <h3 class="text-xl font-bold text-[#0d3b66] mb-3">Época Desportiva e Ciclo de Eventos 2025</h3>
-                <p class="text-gray-700 mb-4">A época desportiva 2025 do Sport Algés e Dafundo será marcada por um intenso calendário de treinos, competições nacionais e internacionais em diversas modalidades, e um ciclo de eventos anuais que fortalecem a comunidade do clube. Estes incluem galas de reconhecimento, formações contínuas para atletas e treinadores, e a celebração do aniversário do clube com eventos especiais.</p>
-                <h3 class="text-xl font-bold text-[#0d3b66] mb-3 mt-6">Objetivos do Patrocínio</h3>
-                <ul class="list-disc list-inside text-gray-700 mb-4 space-y-1">
-                    <li>Apoiar a formação de base e de alta competição dos nossos jovens atletas.</li>
-                    <li>Expandir e diversificar os serviços e modalidades oferecidas aos sócios e à comunidade.</li>
-                    <li>Melhorar as condições das instalações desportivas e equipamentos.</li>
-                    <li>Contratar e reter talentos (atletas e equipas técnicas).</li>
-                    <li>Apoiar as equipas de competição nas suas deslocações e participações.</li>
-                </ul>
-                <h3 class="text-xl font-bold text-[#0d3b66] mb-3 mt-6">Impacto Esperado do Projeto</h3>
-                <ul class="list-disc list-inside text-gray-700 space-y-1">
-                    <li>Atletas: Melhoria do desempenho, captação de atletas, inclusão social no desporto, acesso a melhores condições de treino e competição, desenvolvimento pessoal e social.</li>
-                    <li>Famílias:Maior satisfação, acesso a serviços de qualidade, fortalecimento dos laços comunitários.</li>
-                    <li>Comunidade: Promoção de estilos de vida saudáveis, integração social, reforço da imagem de Algés e Oeiras como centros de excelência desportiva.</li>
-                </ul>
-            </div>
-        </section>
-
-        <section id="audience" class="mb-12">
-            <h2 class="text-2xl md:text-3xl section-title">Público-Alvo: A Nossa Audiência de Valor</h2>
-            <div class="card p-6">
-                <p class="text-gray-700 mb-4">O Sport Algés e Dafundo oferece acesso a uma audiência altamente qualificada e comprometida, dividida em dois perfis principais:</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                        <h3 class="text-xl font-bold text-[#0d3b66] mb-2">1. Estudantes-Atletas de Colégios Privados</h3>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li>Perfil: Jovens entre 6 e 18 anos, provenientes de famílias de classe média-alta/alta.</li>
-                            <li>Hábitos: Ativamente envolvidos em atividades extracurriculares, valorizam a educação e o desenvolvimento holístico.</li>
-                            <li>Interesses: Desporto, saúde, bem-estar, lazer ativo, tecnologia, educação de qualidade.</li>
-                            <li>Localização: Predominantemente residentes nos concelhos de Oeiras e Lisboa, com poder de compra elevado.</li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-bold text-[#0d3b66] mb-2">2. Famílias de Classe Média/Média-Alta (35-50 anos)</h3>
-                        <ul class="list-disc list-inside text-gray-700 space-y-1">
-                            <li>Perfil: Encarregados de educação, com idades entre 35 e 50 anos, com formação superior e rendimentos acima da média nacional.</li>
-                            <li>Hábitos: Consumidores conscientes, valorizam produtos e serviços que promovam a saúde familiar, o bem-estar e a qualidade de vida.</li>
-                            <li>Interesses: Desporto (praticantes ou acompanhantes), nutrição, seguros de saúde, educação, viagens, tecnologia e sustentabilidade.</li>
-                            <li>Localização: Concentrados na região de Algés, Oeiras e concelhos limítrofes.</li>
-                        </ul>
-                    </div>
-                </div>
-                <h3 class="text-xl font-bold text-[#0d3b66] mb-3 mt-6">Dados Relevantes da Nossa Comunidade:</h3>
-                <ul class="list-disc list-inside text-gray-700 space-y-1">
-                    <li>Sócios Ativos: Cerca de 2000</li>
-                    <li>Atletas no Clube: Cerca de 2000 (podendo coincidir com sócios)</li>
-                    <li>Famílias Envolvidas: Mais de 2000 famílias ativamente ligadas ao clube.</li>
-                    <li>Alcance nas Redes Sociais: Mais de 45.000 seguidores agregados (Facebook, Instagram, TikTok, YouTube e páginas de modalidades).</li>
-                    <li>Participação em Competições: Presença regular em competições nacionais e internacionais ao longo de 2025 em diversas modalidades.</li>
-                    <li>Eventos Anuais: Galas, formações, celebrações de aniversário, torneios e festivais internos.</li>
-                </ul>
-            </div>
-        </section>
-
-        <section id="categories" class="mb-12">
-            <h2 class="text-2xl md:text-3xl section-title">Categorias de Patrocínio</h2>
-            <div class="card p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div>
-                    <h3 class="text-xl font-bold text-[#0d3b66] mb-2">Patrocínios Principais</h3>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1">
-                        <li>Patrocinador Oficial (Ouro): Máxima visibilidade e integração.</li>
-                        <li>Patrocinador Prata: Visibilidade significativa e ativações chave.</li>
-                        <li>Patrocinador Bronze: Presença fundamental e associação à marca.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold text-[#0d3b66] mb-2">Parcerias Estratégicas</h3>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1">
-                        <li>Parceiro Técnico Oficial: Fornecedor de equipamentos (ex: Joma).</li>
-                        <li>Parceiro de Mobilidade: Apoio em deslocações, viaturas, combustível.</li>
-                        <li>Fornecedor Oficial de Apoio Desportivo: Águas, snacks em eventos.</li>
-                        <li>Parceiro Institucional: Junta de Freguesia, Oeiras Valley.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold text-[#0d3b66] mb-2">Parcerias Temáticas & Sociais</h3>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1">
-                        <li>Parceiro Académico/Estratégico: Universidades, Centros de Explicações, Colégios Privados, ATL’s (protocolos, descontos, instalações).</li>
-                        <li>Parceiro de Impacto Social: Foco em iniciativas de RSC.</li>
-                        <li>Parceiro Solidário / Parceiro do Mês: Apoio a causas específicas, distribuição de cabazes.</li>
-                        <li>Parceiro Local: Descontos e vantagens para sócios no comércio local.</li>
-                        <li>Amigo do Algés: Apoio em eventos, donativos, afinidade ao clube.</li>
-                        <li>Parceiro de Inovação: Fintechs, apps, health techs para estudos e desenvolvimento.</li>
-                        <li>Parceiro Digital: Ações digitais, plataformas, pagamentos, transformação digital.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="counterparts" class="mb-12">
-            <h2 class="text-2xl md:text-3xl section-title">Plano de Contrapartidas por Pacote</h2>
-            <div class="card p-6 overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead>
-                        <tr>
-                            <th class="py-3 px-4 text-xs uppercase tracking-wider">Contrapartida</th>
-                            <th class="py-3 px-4 text-xs uppercase tracking-wider package-header">Bronze</th>
-                            <th class="py-3 px-4 text-xs uppercase tracking-wider package-header">Prata</th>
-                            <th class="py-3 px-4 text-xs uppercase tracking-wider package-header">Ouro</th>
-                        </tr>
-                    </thead>
-                    <tbody id="benefits-table-body" class="bg-white divide-y divide-gray-200">
-                        <!-- Benefits will be dynamically inserted here -->
-                    </tbody>
-                </table>
-            </div>
-        </section>
-
-        <section id="benefits" class="mb-12">
-            <h2 class="text-2xl md:text-3xl section-title">Vantagens para o Patrocinador</h2>
-            <div class="card p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div>
-                    <h3 class="text-xl font-bold text-[#0d3b66] mb-2">Visibilidade e Reconhecimento</h3>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1">
-                        <li>Associação a um clube centenário com legado olímpico.</li>
-                        <li>Exposição da marca em instalações de prestígio e eventos de grande afluência.</li>
-                        <li>Alcance significativo através das nossas plataformas digitais (website, redes sociais).</li>
-                        <li>Oportunidades de relações públicas e menções em media.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold text-[#0d3b66] mb-2">Acesso a um Público Qualificado</h3>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1">
-                        <li>Comunicação direta com famílias de classe média/média-alta com elevado poder de compra.</li>
-                        <li>Conexão com jovens atletas e suas famílias, um segmento influente e com hábitos de consumo específicos.</li>
-                        <li>Possibilidade de realizar estudos de mercado e recolher feedback direto da nossa comunidade.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold text-[#0d3b66] mb-2">Impacto Social e RSC</h3>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1">
-                        <li>Contribuição direta para o desenvolvimento desportivo e humano de mais de 2000 jovens.</li>
-                        <li>Fortalecimento da imagem corporativa através do apoio a uma instituição de utilidade pública.</li>
-                        <li>Envolvimento em ações de solidariedade e responsabilidade social.</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold text-[#0d3b66] mb-2">Flexibilidade e Eficácia</h3>
-                    <ul class="list-disc list-inside text-gray-700 space-y-1">
-                        <li>Pacotes personalizáveis para alinhar com os seus objetivos específicos.</li>
-                        <li>Compromisso com a avaliação de ROI e ROO através de relatórios regulares e ferramentas dedicadas.</li>
-                        <li>Construção de uma parceria estratégica e de longo prazo.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="governance" class="mb-12">
-            <h2 class="text-2xl md:text-3xl section-title">Governança e Avaliação de ROI/ROO</h2>
-            <div class="card p-6">
-                <p class="text-gray-700 mb-4">Acreditamos na transparência e no controlo do valor entregue aos nossos patrocinadores. Implementamos um plano de governança robusto para garantir o acompanhamento e a entrega de métricas relevantes.</p>
-                <h3 class="text-xl font-bold text-[#0d3b66] mb-3">Frequência dos Relatórios:</h3>
-                <ul class="list-disc list-inside text-gray-700 mb-4 space-y-1">
-                    <li>Relatórios Mensais: Para métricas de visibilidade digital (redes sociais, website) e engajamento em campanhas específicas.</li>
-                    <li>Relatórios Trimestrais: Análise mais aprofundada de todas as métricas, incluindo dados de público físico, feedback de inquéritos e progresso em objetivos de negócio/marca.</li>
-                    <li>Relatório Anual: Balanço completo do patrocínio, destacando o ROI e ROO alcançados, com estudos de caso e testemunhos de impacto.</li>
-                </ul>
-                <h3 class="text-xl font-bold text-[#0d3b66] mb-3 mt-6">Ferramentas para Tracking de Métricas:</h3>
-                <ul class="list-disc list-inside text-gray-700 space-y-1">
-                    <li>Visibilidade e Alcance: Google Analytics (website), Ferramentas Nativas de Análise de Redes Sociais (Facebook Insights, Instagram Insights, TikTok Analytics, YouTube Analytics), Google Alerts (menções de media), Registos de Contagem de Público (instalações físicas).</li>
-                    <li>Engajamento: Ferramentas Nativas de Análise de Redes Sociais, Google Forms/SurveyMonkey (inquéritos de marca e feedback), HubSpot CRM (gestão de interações).</li>
-                    <li>Negócio/Vendas (ROI): Códigos Promocionais/URLs Únicos (monitorizados pelo patrocinador), Relatórios de Vendas (do patrocinador, com partilha de dados), Relatórios Básicos do Google Ads (se aplicável).</li>
-                    <li>Marca (ROO): Google Forms/SurveyMonkey (inquéritos de marca pré/pós patrocínio), Google Alerts (social listening básico).</li>
-                    <li>RSC: Relatórios de Atividade do Clube (documentação de programas sociais), Estudos de Caso e Testemunhos (vídeos, fotos, depoimentos).</li>
-                </ul>
-                <p class="text-gray-700 mt-4">Trabalharemos em estreita colaboração com o seu Gestor de Patrocínios para personalizar os relatórios e garantir que as métricas mais importantes para os seus objetivos sejam consistentemente monitorizadas e comunicadas.</p>
-            </div>
-        </section>
-
-        <section id="participation" class="mb-12">
-            <h2 class="text-2xl md:text-3xl section-title">Formas de Participação</h2>
-            <div class="card p-6 text-center">
-                <p class="text-gray-700 mb-4">Convidamo-lo a fazer parte da família Sport Algés e Dafundo. Oferecemos flexibilidade para adaptar a sua participação às suas necessidades e objetivos.</p>
-                <h3 class="text-xl font-bold text-[#0d3b66] mb-3">Como Aderir:</h3>
-                <p class="text-xl font-bold text-[#0d3b66] mb-2">Valores Anuais Indicativos:</p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                    <div class="p-4 border-l-4 border-[#0d3b66] text-left">
-                        <h4 class="text-lg font-bold text-[#0d3b66]">Pacote Bronze</h4>
-                        <p class="text-xl font-bold text-[#0d3b66]">€5.000 - €15.000</p>
-                    </div>
-                    <div class="p-4 border-l-4 border-[#3c6e71] text-left">
-                        <h4 class="text-lg font-bold text-[#3c6e71]">Pacote Prata</h4>
-                        <p class="text-xl font-bold text-[#3c6e71]">€15.000 - €40.000</p>
-                    </div>
-                    <div class="p-4 border-l-4 border-[#d4a373] text-left">
-                        <h4 class="text-lg font-bold text-[#d4a373]">Pacote Ouro</h4>
-                        <p class="text-xl font-bold text-[#d4a373]">€40.000 - €100.000+</p>
-                    </div>
-                </div>
-                <p class="text-gray-700 mb-4">Flexibilidade para Propostas Personalizadas: Os valores e as contrapartidas podem ser ajustados para criar um plano que se adapte perfeitamente à sua estratégia de marketing e orçamento.</p>
-                <p class="text-gray-700">Possibilidade de Combinar Patrocínio Monetário e em Espécie: Aceitamos apoio financeiro e/ou a cedência de bens e serviços que beneficiem o clube e os nossos atletas (ex: equipamentos, transportes, produtos alimentares, serviços tecnológicos).</p>
-            </div>
-        </section>
-
-        <section id="contacts" class="mb-12">
-            <h2 class="text-2xl md:text-3xl section-title">Contactos</h2>
-            <div class="card p-6 text-center">
-                <p class="text-gray-700 mb-4">Para mais informações e para discutir uma parceria à medida, por favor, contacte o nosso Gestor de Patrocínios:</p>
-                <div class="mb-4">
-                    <p class="text-xl font-bold text-[#0d3b66]">Gonçalo Romão</p>
-                    <p class="text-lg text-gray-700">Email: goncalo.romao@algesedafundo.pt</p>
-                    <p class="text-lg text-gray-700">Telefone: +351 937432184</p>
-                </div>
-                <div>
-                    <p class="text-xl font-bold text-[#0d3b66]">Tiago Westenfeld</p>
-                    <p class="text-lg text-gray-700">Email: tiago.westenfeld@algesedafundo.pt</p>
-                    <p class="text-lg text-gray-700">Telefone: +351 927401352</p>
-                </div>
-                <p class="text-gray-700 mt-6 font-semibold">Aguardamos o seu contacto para construir uma parceria de sucesso!</p>
-            </div>
-        </section>
-
-    </main>
-
-    <footer class="bg-white shadow-sm py-6 mt-12">
-        <div class="container text-center text-gray-600 text-sm">
-            &copy; 2025 Sport Algés e Dafundo. Todos os direitos reservados.
-        </div>
-    </footer>
-
-    <script>
-        const counterpartsData = [
-            { name: "Visibilidade em Instalações (Geral)", category: "Infraestrutura", audience: 3, replication: 2, frequency: 4, visibility: 3, impact: 3 },
-            { name: "Visibilidade em Áreas Nobres (Piscina, Pavilhão, Imprensa)", category: "Infraestrutura", audience: 4, replication: 3, frequency: 4, visibility: 4, impact: 4 },
-            { name: "Patrocínio de Modalidade Específica", category: "Modalidades", audience: 5, replication: 4, frequency: 5, visibility: 5, impact: 5 },
-            { name: "Ativação de Marca em Equipamento Desportivo & Embarcações", category: "Modalidades", audience: 5, replication: 4, frequency: 5, visibility: 5, impact: 5 },
-            { name: "Banca de Ativação em Eventos", category: "Eventos", audience: 4, replication: 4, frequency: 3, visibility: 4, impact: 4 },
-            { name: "Acesso VIP a Eventos", category: "Eventos", audience: 3, replication: 2, frequency: 2, visibility: 2, impact: 3 },
-            { name: "Naming Rights (Eventos, Prémios, Equipas)", category: "Eventos", audience: 5, replication: 5, frequency: 5, visibility: 5, impact: 5 },
-            { name: "Organização de Evento Exclusivo", category: "Eventos", audience: 5, replication: 1, frequency: 1, visibility: 4, impact: 5 },
-            { name: "Publicidade Visual (Roll-ups, Lonas, Totens)", category: "Marketing e Publicidade", audience: 4, replication: 4, frequency: 4, visibility: 4, impact: 4 },
-            { name: "Brindes/Merchandising com Marca", category: "Marketing e Publicidade", audience: 4, replication: 5, frequency: 5, visibility: 4, impact: 4 },
-            { name: "Campanhas de Ativação na Loja do Clube", category: "Marketing e Publicidade", audience: 4, replication: 4, frequency: 3, visibility: 4, impact: 5 },
-            { name: "Spot Publicitário (Digital/Clube)", category: "Marketing e Publicidade", audience: 4, replication: 4, frequency: 4, visibility: 4, impact: 4 },
-            { name: "Acesso a Bases de Dados (Sócios, Atletas, Famílias)", category: "Audiência", audience: 5, replication: 5, frequency: 5, visibility: 4, impact: 5 },
-            { name: "Programas de Benefícios (Descontos, Inquéritos)", category: "Audiência", audience: 5, replication: 5, frequency: 5, visibility: 4, impact: 5 },
-            { name: "Publicações Patrocinadas (Redes Sociais Gerais)", category: "Redes Sociais", audience: 4, replication: 5, frequency: 5, visibility: 4, impact: 4 },
-            { name: "Publicações/Conteúdo YouTube", category: "Redes Sociais", audience: 4, replication: 4, frequency: 3, visibility: 4, impact: 4 },
-            { name: "Inclusão em Newsletter/Mailing List", category: "Comunicação", audience: 4, replication: 4, frequency: 4, visibility: 3, impact: 3 },
-            { name: "Logotipo em Material Institucional", category: "Comunicação", audience: 4, replication: 5, frequency: 5, visibility: 4, impact: 4 },
-            { name: "Destaque no Website do Clube", category: "Comunicação", audience: 5, replication: 5, frequency: 5, visibility: 5, impact: 5 },
-            { name: "Relações Públicas & Media", category: "Comunicação", audience: 5, replication: 3, frequency: 2, visibility: 5, impact: 5 },
-            { name: "Produção de Conteúdo Co-branded", category: "Comunicação", audience: 5, replication: 4, frequency: 3, visibility: 5, impact: 5 },
-            { name: "Marca em Produtos Licenciados", category: "Merchandising", audience: 4, replication: 4, frequency: 4, visibility: 4, impact: 4 },
-            { name: "Coleções Exclusivas Co-Branded", category: "Merchandising", audience: 5, replication: 3, frequency: 2, visibility: 4, impact: 5 },
-            { name: "Brindes Promocionais (Pequenos)", category: "Merchandising", audience: 3, replication: 5, frequency: 5, visibility: 3, impact: 3 },
-            { name: "Venda de Produtos do Patrocinador (Loja/Web)", category: "Merchandising", audience: 4, replication: 4, frequency: 4, visibility: 4, impact: 4 }
-        ];
-
-        function calculateTotalScore(counterpart) {
-            return counterpart.audience + counterpart.replication + counterpart.frequency + counterpart.visibility + counterpart.impact;
-        }
-
-        counterpartsData.forEach(c => {
-            c.totalScore = calculateTotalScore(c);
-        });
-
-        const rankedCounterparts = [...counterpartsData].sort((a, b) => b.totalScore - a.totalScore);
-
-        // Define score thresholds for packages. These are illustrative and can be adjusted.
-        const goldThreshold = 20;
-        const silverThreshold = 15;
-
-        const simplifiedBenefitsForPackages = [
-            { name: "Visibilidade em Instalações (Geral)", bronze: true, silver: true, gold: true },
-            { name: "Visibilidade em Áreas Nobres (Piscina, Pavilhão, Imprensa)", bronze: false, silver: true, gold: true },
-            { name: "Patrocínio de Modalidade Específica", bronze: false, silver: false, gold: true },
-            { name:"Ativação de Marca em Equipamento Desportivo & Embarcações", bronze: false, silver: false, gold: true },
-            { name: "Banca de Ativação em Eventos", bronze: true, silver: true, gold: true },
-            { name: "Acesso VIP a Eventos", bronze: false, silver: true, gold: true },
-            { name: "Naming Rights (Eventos, Prémios, Equipas)", bronze: false, silver: false, gold: true },
-            { name: "Organização de Evento Exclusivo", bronze: false, silver: false, gold: true },
-            { name: "Publicidade Visual (Roll-ups, Lonas, Totens)", bronze: true, silver: true, gold: true },
-            { name: "Brindes/Merchandising com Marca", bronze: false, silver: true, gold: true },
-            { name: "Campanhas de Ativação na Loja do Clube", bronze: false, silver: true, gold: true },
-            { name: "Spot Publicitário (Digital/Clube)", bronze: false, silver: true, gold: true },
-            { name: "Acesso a Bases de Dados (Sócios, Atletas, Famílias)", bronze: false, silver: true, gold: true },
-            { name: "Programas de Benefícios (Descontos, Inquéritos)", bronze: false, silver: true, gold: true },
-            { name: "Publicações Patrocinadas (Redes Sociais)", bronze: true, silver: true, gold: true },
-            { name: "Publicações/Conteúdo YouTube", bronze: false, silver: true, gold: true },
-            { name: "Inclusão em Newsletter/Mailing List", bronze: true, silver: true, gold: true },
-            { name: "Logotipo em Material Institucional", bronze: true, silver: true, gold: true },
-            { name: "Destaque no Website do Clube", bronze: false, silver: true, gold: true },
-            { name: "Relações Públicas & Media", bronze: false, silver: false, gold: true },
-            { name: "Produção de Conteúdo Co-branded", bronze: false, silver: false, gold: true },
-            { name: "Marca em Produtos Licenciados", bronze: false, silver: true, gold: true },
-            { name: "Coleções Exclusivas Co-Branded", bronze: false, silver: false, gold: true },
-            { name: "Brindes Promocionais (Pequenos)", bronze: true, silver: true, gold: true },
-            { name: "Venda de Produtos do Patrocinador (Loja/Web)", bronze: false, silver: true, gold: true }
-        ];
-
-        // Render Benefits Table with Checkboxes
-        const benefitsTableBody = document.getElementById('benefits-table-body');
-        simplifiedBenefitsForPackages.forEach(benefit => {
-            const row = benefitsTableBody.insertRow();
-            row.innerHTML = `
-                <td class="text-gray-800">${benefit.name}</td>
-                <td class="checkbox-cell"><input type="checkbox" ${benefit.bronze ? 'checked' : ''} disabled></td>
-                <td class="checkbox-cell"><input type="checkbox" ${benefit.silver ? 'checked' : ''} disabled></td>
-                <td class="checkbox-cell"><input type="checkbox" ${benefit.gold ? 'checked' : ''} disabled></td>
-            `;
-        });
-
-        // Sticky nav active state on scroll
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('nav a');
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                if (pageYOffset >= sectionTop - 100) {
-                    current = section.getAttribute('id');
-                }
-            });
-
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href').includes(current)) {
-                    link.classList.add('active');
-                }
-            });
-        });
-    </script>
 </body>
 </html>
