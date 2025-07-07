@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Valor 360°: Metodologia, Preçário e Fontes | Sport Algés e Dafundo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .value-card {
+            border-left: 4px solid;
+            transition: all 0.3s ease-in-out;
+        }
+        .value-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .source-box {
+            background-color: #eef2ff;
+            border-left: 4px solid #4f46e5;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        .category-digital { border-color: #003F5C; }
+        .category-physical { border-color: #7A5195; }
+        .category-experiential { border-color: #EF5675; }
+        .category-commercial { border-color: #FFA600; }
+    </style>
+</head>
+<body class="text-gray-700">
+
+    <header class="bg-[#003F5C] text-white p-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-black uppercase">Análise de Valor 360°</h1>
+        <p class="mt-2 max-w-3xl mx-auto text-lg font-light">A justificação completa do valor de cada contrapartida, combinando metodologia, preçário de mercado e fontes de investigação.</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8 space-y-16">
+
+        <!-- Secção 1: Capital Digital -->
+        <section id="digital-assets">
+            <div class="flex items-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-[#003F5C] text-white flex items-center justify-center text-3xl font-bold mr-4">1</div>
+                <div>
+                    <h2 class="text-3xl font-bold text-[#003F5C]">Capital Digital</h2>
+                    <p class="text-gray-600"><strong>Metodologia:</strong> Valorizado por VEP (Valor Equivalente em Publicidade), comparando o custo para obter o mesmo alcance em publishers de referência.</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-8">
+                <div class="chart-container">
+                    <canvas id="cpmComparisonChart"></canvas>
+                </div>
+                <div>
+                    <h3 class="font-bold text-lg mb-2">A Lógica do Valor: Porquê um CPM Premium?</h3>
+                    <p class="mb-4">A nossa audiência de 45.000 seguidores é mais valiosa que a de um feed genérico. É uma comunidade de nicho, leal e com elevado engagement. Por isso, o nosso Custo por Mil Impressões (CPM) justificado é superior ao CPM genérico das redes sociais, posicionando-se como uma alternativa premium e de maior retorno, mas ainda competitiva face aos grandes publishers nacionais.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="value-card category-digital bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-lg">Publicações Patrocinadas</h3>
+                    <p class="text-3xl font-extrabold my-2 text-[#003F5C]">€250 - €400 <span class="text-base font-normal">/ post</span></p>
+                    <p class="text-sm"><strong>Justificação:</strong> Baseado no nosso CPM justificado (~€30), que reflete a qualidade da audiência. O valor varia com o formato (post, story, vídeo).</p>
+                </div>
+                <div class="value-card category-digital bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-lg">Destaque no Website</h3>
+                    <p class="text-3xl font-extrabold my-2 text-[#003F5C]">€3.000 <span class="text-base font-normal">/ ano</span></p>
+                    <p class="text-sm"><strong>Justificação:</strong> Comparativo com o custo de um banner anual em publishers nacionais (ex: RTP, Observador) para tráfego qualificado.</p>
+                </div>
+                <div class="value-card category-digital bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-lg">Inclusão em Newsletter</h3>
+                    <p class="text-3xl font-extrabold my-2 text-[#003F5C]">€500 <span class="text-base font-normal">/ envio</span></p>
+                    <p class="text-sm"><strong>Justificação:</strong> Custo por contacto qualificado. A nossa base de dados tem taxas de abertura e conversão muito superiores às de email marketing genérico.</p>
+                </div>
+            </div>
+
+            <div class="source-box p-4 rounded-md">
+                <p class="font-semibold text-indigo-800">Fontes de Investigação:</p>
+                <ul class="list-disc list-inside text-sm text-indigo-700 mt-2">
+                    <li>Tabelas de Preços 2024: RTP, Observador, Cofina, Público</li>
+                    <li>Análise de Mercado Publicitário: Magna (IPG Mediabrands)</li>
+                    <li>Estudos sobre VEP/AVE (Advertising Value Equivalency) na indústria</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Secção 2: Capital Físico -->
+        <section id="physical-assets">
+            <div class="flex items-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-[#7A5195] text-white flex items-center justify-center text-3xl font-bold mr-4">2</div>
+                <div>
+                    <h2 class="text-3xl font-bold text-[#7A5195]">Capital Físico</h2>
+                    <p class="text-gray-600"><strong>Metodologia:</strong> Valorizado por comparação com o mercado de publicidade OOH (Out-of-Home), com um prémio pela afinidade e repetição da audiência.</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="value-card category-physical bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-lg">Ativação em Equipamento</h3>
+                    <p class="text-3xl font-extrabold my-2 text-[#7A5195]">€20.000 - €40.000 <span class="text-base font-normal">/ ano</span></p>
+                    <p class="text-sm"><strong>Justificação:</strong> Custo base de €10-€20 por cada um dos 2.000 atletas. Cada atleta é um "outdoor humano" que gera milhares de impressões autênticas por época.</p>
+                </div>
+                <div class="value-card category-physical bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-lg">Visibilidade em Áreas Nobres</h3>
+                    <p class="text-3xl font-extrabold my-2 text-[#7A5195]">€2.500 - €5.000 <span class="text-base font-normal">/ banner/ano</span></p>
+                    <p class="text-sm"><strong>Justificação:</strong> Custo anual de um outdoor em zona de tráfego, ajustado para a repetição e o impacto emocional numa audiência cativa e apaixonada.</p>
+                </div>
+                <div class="value-card category-physical bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-lg">Patrocínio de Modalidade</h3>
+                    <p class="text-3xl font-extrabold my-2 text-[#7A5195]">€5.000 - €15.000 <span class="text-base font-normal">/ ano</span></p>
+                    <p class="text-sm"><strong>Justificação:</strong> Permite uma segmentação ultra-focada. O valor inclui visibilidade no equipamento da modalidade e associação direta aos seus valores e conquistas.</p>
+                </div>
+            </div>
+            <div class="source-box p-4 rounded-md">
+                <p class="font-semibold text-indigo-800">Fontes de Investigação:</p>
+                <ul class="list-disc list-inside text-sm text-indigo-700 mt-2">
+                    <li>Análise de mercado de publicidade OOH em Portugal</li>
+                    <li>Estudos sobre a eficácia da publicidade em pontos de afinidade e *grassroots marketing*</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Secção 3: Capital Experiencial e Ativação -->
+        <section id="experiential-assets">
+            <div class="flex items-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-[#EF5675] text-white flex items-center justify-center text-3xl font-bold mr-4">3</div>
+                <div>
+                    <h2 class="text-3xl font-bold text-[#EF5675]">Capital Experiencial e Ativação</h2>
+                    <p class="text-gray-600"><strong>Metodologia:</strong> Valorizado pelo Custo de Oportunidade: quanto custaria à marca criar uma experiência semelhante de raiz.</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="value-card category-experiential bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-lg">Naming Rights</h3>
+                    <p class="text-3xl font-extrabold my-2 text-[#EF5675]">€10.000 - €25.000 <span class="text-base font-normal">/ ano</span></p>
+                    <p class="text-sm"><strong>Justificação:</strong> Valor dos direitos de propriedade intelectual. A marca integra-se na história e comunicação do clube, gerando uma associação de elevado valor.</p>
+                </div>
+                <div class="value-card category-experiential bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-lg">Banca de Ativação em Eventos</h3>
+                    <p class="text-3xl font-extrabold my-2 text-[#EF5675]">€1.500 - €3.500 <span class="text-base font-normal">/ evento</span></p>
+                    <p class="text-sm"><strong>Justificação:</strong> Poupança em logística, promoção e staff. A marca acede a uma audiência garantida e segmentada, ideal para sampling ou geração de leads.</p>
+                </div>
+                <div class="value-card category-experiential bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-lg">Acesso VIP a Eventos</h3>
+                    <p class="text-3xl font-extrabold my-2 text-[#EF5675]">€4.000 <span class="text-base font-normal">/ pacote anual</span></p>
+                    <p class="text-sm"><strong>Justificação:</strong> Comparativo com pacotes de *Corporate Hospitality*. É uma ferramenta de CRM de alto valor para o relacionamento com clientes e parceiros.</p>
+                </div>
+            </div>
+            <div class="source-box p-4 rounded-md">
+                <p class="font-semibold text-indigo-800">Fontes de Investigação:</p>
+                <ul class="list-disc list-inside text-sm text-indigo-700 mt-2">
+                    <li>Estudos sobre a importância da ativação de patrocínios e *experiential marketing*</li>
+                    <li>Análise de custos de produção de eventos de marketing</li>
+                    <li>Valorização de Direitos de Propriedade Intelectual (Naming Rights)</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Secção 4: Capital Comunitário e Comercial -->
+        <section id="commercial-assets">
+            <div class="flex items-center mb-6">
+                <div class="w-16 h-16 rounded-full bg-[#FFA600] text-white flex items-center justify-center text-3xl font-bold mr-4">4</div>
+                <div>
+                    <h2 class="text-3xl font-bold text-[#FFA600]">Capital Comunitário e Comercial</h2>
+                    <p class="text-gray-600"><strong>Metodologia:</strong> Valorizado pelo potencial de negócio direto e pelo "Multiplicador de Goodwill" da comunidade.</p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="value-card category-commercial bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-lg">Programas de Benefícios</h3>
+                    <p class="text-3xl font-extrabold my-2 text-[#FFA600]">ROI Direto</p>
+                    <p class="text-sm"><strong>Justificação:</strong> O valor é o retorno direto em vendas. O "selo de aprovação" do clube aumenta a adesão e gera negócio mensurável para o patrocinador.</p>
+                </div>
+                <div class="value-card category-commercial bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-lg">Produtos Licenciados</h3>
+                    <p class="text-3xl font-extrabold my-2 text-[#FFA600]">Baseado em Royalties</p>
+                    <p class="text-sm"><strong>Justificação:</strong> Modelo de partilha de receita (tipicamente 5-10% sobre as vendas), criando uma parceria de ganho mútuo e alinhamento de interesses.</p>
+                </div>
+                <div class="value-card category-commercial bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-bold text-lg">Acesso a Bases de Dados</h3>
+                    <p class="text-3xl font-extrabold my-2 text-[#FFA600]">Incalculável</p>
+                    <p class="text-sm"><strong>Justificação:</strong> O valor não está nos dados, mas na permissão para comunicar com uma comunidade que confia no clube. Um ativo estratégico de valor incalculável.</p>
+                </div>
+            </div>
+            <div class="source-box p-4 rounded-md">
+                <p class="font-semibold text-indigo-800">Fontes de Investigação:</p>
+                <ul class="list-disc list-inside text-sm text-indigo-700 mt-2">
+                    <li>Estudos sobre marketing tribal, lealdade e identificação de fãs</li>
+                    <li>Impacto da afinidade na intenção de compra e no valor do *goodwill*</li>
+                </ul>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#003F5C] text-white mt-12">
+        <div class="container mx-auto p-8 text-center">
+            <h3 class="text-2xl font-bold">Uma Parceria Estratégica, Um Retorno Claro</h3>
+            <p class="text-lg mt-2">Esta análise demonstra que cada contrapartida tem um valor de mercado real, justificado e defensável.</p>
+            <p class="text-sm mt-4 opacity-80">Relatório de Análise de Valorização de Patrocínios | Sport Algés e Dafundo, 2025.</p>
+        </div>
+    </footer>
+
+<script>
+function wrapText(text, maxLength) {
+    if (typeof text !== 'string' || text.length <= maxLength) {
+        return text;
+    }
+    const words = text.split(' ');
+    const lines = [];
+    let currentLine = '';
+    for (const word of words) {
+        if ((currentLine + ' ' + word).trim().length > maxLength) {
+            lines.push(currentLine.trim());
+            currentLine = word;
+        } else {
+            currentLine = (currentLine + ' ' + word).trim();
+        }
+    }
+    if (currentLine) {
+        lines.push(currentLine.trim());
+    }
+    return lines;
+}
+
+const tooltipTitleCallback = (tooltipItems) => {
+    const item = tooltipItems[0];
+    let label = item.chart.data.labels[item.dataIndex];
+    if (Array.isArray(label)) {
+        return label.join(' ');
+    }
+    return label;
+};
+
+const chartColors = {
+    navy: '#003F5C',
+    purple: '#7A5195',
+    pink: '#BC5090',
+    rose: '#EF5675',
+    orange: '#FF764A',
+    yellow: '#FFA600',
+    lightGray: '#d1d5db',
+    indigo: '#4f46e5',
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    const defaultChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                enabled: true,
+                callbacks: {
+                    title: tooltipTitleCallback
+                },
+                backgroundColor: '#000',
+                titleFont: { size: 14, family: "'Inter', sans-serif" },
+                bodyFont: { size: 12, family: "'Inter', sans-serif" },
+                padding: 10,
+                cornerRadius: 5
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: '#6b7280',
+                    font: { family: "'Inter', sans-serif" },
+                },
+                grid: { color: '#e5e7eb' }
+            },
+            x: {
+                ticks: { 
+                    color: '#6b7280', 
+                    font: { family: "'Inter', sans-serif" },
+                    callback: function(value) {
+                        return '€' + value;
+                    }
+                },
+                grid: { display: false },
+                title: {
+                     display: true,
+                     text: 'Custo por Mil Impressões (€)',
+                     color: '#4b5563'
+                 }
+            }
+        },
+    };
+
+    const cpmComparisonCtx = document.getElementById('cpmComparisonChart')?.getContext('2d');
+    if (cpmComparisonCtx) {
+        new Chart(cpmComparisonCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    wrapText('CPM Genérico (Redes Sociais)', 25), 
+                    wrapText('CPM Justificado (Algés)', 25), 
+                    wrapText('CPM Publishers Premium (Média)', 25)
+                ],
+                datasets: [{
+                    label: 'Valor de CPM (€)',
+                    data: [10, 30, 95], 
+                    backgroundColor: [
+                        chartColors.lightGray,
+                        chartColors.yellow,
+                        chartColors.navy,
+                    ],
+                    borderRadius: 5,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.7,
+                }]
+            },
+            options: {
+                ...defaultChartOptions,
+            }
+        });
+    }
+});
+</script>
+
+</body>
+</html>

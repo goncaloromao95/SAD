@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slicing de Contrapartidas | Sport Algés e Dafundo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* Light Gray Background */
+            color: #343a40; /* Dark Gray Text */
+        }
+        .container {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 1rem;
+        }
+        .section-title {
+            color: #0d3b66; /* Deep Blue */
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -2px rgba(0,0,0,0.1);
+        }
+        .package-card {
+            border: 2px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .package-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.1);
+        }
+        .package-gold { border-color: #d4a373; } /* Gold Accent */
+        .package-silver { border-color: #3c6e71; } /* Tealish Blue */
+        .package-bronze { border-color: #0d3b66; } /* Deep Blue */
+
+        .package-title-gold { color: #d4a373; }
+        .package-title-silver { color: #3c6e71; }
+        .package-title-bronze { color: #0d3b66; }
+
+        th, td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef; /* Light Gray Border */
+        }
+        th {
+            background-color: #e9ecef;
+            font-weight: 700;
+            color: #495057;
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        .score-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+            background-color: #d4a373;
+            color: white;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <header class="bg-white shadow-sm py-6">
+        <div class="container text-center">
+            <h1 class="text-3xl md:text-4xl font-black text-[#0d3b66]">Slicing de Contrapartidas</h1>
+            <p class="text-md text-gray-600 mt-2">Sport Algés e Dafundo: Otimização de Pacotes de Patrocínio</p>
+        </div>
+    </header>
+
+    <main class="container py-8">
+
+        <section id="introduction" class="mb-12">
+            <h2 class="text-2xl md:text-3xl section-title">Introdução</h2>
+            <div class="card">
+                <p class="text-gray-700">Esta aplicação interativa foi desenvolvida para categorizar, avaliar e agrupar as contrapartidas de patrocínio do Sport Algés e Dafundo. O objetivo é fornecer uma visão clara do valor de cada contrapartida e facilitar a criação de pacotes de patrocínio estratégicos (Ouro, Prata e Bronze), otimizados para diferentes níveis de investimento e objetivos de patrocinadores.</p>
+                <p class="text-gray-700 mt-4">Cada contrapartida foi avaliada numa escala de 1 a 5 em cinco critérios chave: Audiência, Replicação, Frequência, Visibilidade & Amplitude e Impacto. A soma destas pontuações gera um 'Valor Total', permitindo um ranking objetivo e uma distribuição equitativa pelos pacotes.</p>
+            </div>
+        </section>
+
+        <section id="counterparts-details" class="mb-12">
+            <h2 class="text-2xl md:text-3xl section-title">Contrapartidas Detalhadas e Avaliação</h2>
+            <div class="card overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr>
+                            <th class="py-3 px-4 text-xs uppercase tracking-wider">Contrapartida</th>
+                            <th class="py-3 px-4 text-xs uppercase tracking-wider">Categoria</th>
+                            <th class="py-3 px-4 text-xs uppercase tracking-wider">Audiência (1-5)</th>
+                            <th class="py-3 px-4 text-xs uppercase tracking-wider">Replicação (1-5)</th>
+                            <th class="py-3 px-4 text-xs uppercase tracking-wider">Frequência (1-5)</th>
+                            <th class="py-3 px-4 text-xs uppercase tracking-wider">Visibilidade (1-5)</th>
+                            <th class="py-3 px-4 text-xs uppercase tracking-wider">Impacto (1-5)</th>
+                            <th class="py-3 px-4 text-xs uppercase tracking-wider">Valor Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="counterparts-table-body" class="bg-white divide-y divide-gray-200">
+                        <!-- Counterparts will be dynamically inserted here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="ranking" class="mb-12">
+            <h2 class="text-2xl md:text-3xl section-title">Ranking das Contrapartidas por Valor</h2>
+            <div class="card">
+                <ul id="ranked-list" class="list-none p-0 space-y-2">
+                    <!-- Ranked counterparts will be dynamically inserted here -->
+                </ul>
+            </div>
+        </section>
+
+        <section id="packages" class="mb-12">
+            <h2 class="text-2xl md:text-3xl section-title">Pacotes de Patrocínio</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="package-card package-gold">
+                    <h3 class="text-2xl font-bold package-title-gold mb-4">Pacote Ouro</h3>
+                    <p class="text-gray-700 mb-4">Este pacote inclui as contrapartidas de maior valor e impacto, oferecendo a máxima visibilidade e envolvimento para o seu patrocinador. Ideal para empresas que procuram uma parceria estratégica e de alto nível.</p>
+                    <ul id="package-gold-list" class="list-disc list-inside text-gray-700 space-y-1"></ul>
+                </div>
+                <div class="package-card package-silver">
+                    <h3 class="text-2xl font-bold package-title-silver mb-4">Pacote Prata</h3>
+                    <p class="text-gray-700 mb-4">O pacote Prata oferece um excelente equilíbrio entre valor e investimento, com contrapartidas de forte visibilidade e impacto. Perfeito para empresas que desejam uma presença significativa e um retorno sólido.</p>
+                    <ul id="package-silver-list" class="list-disc list-inside text-gray-700 space-y-1"></ul>
+                </div>
+                <div class="package-card package-bronze">
+                    <h3 class="text-2xl font-bold package-title-bronze mb-4">Pacote Bronze</h3>
+                    <p class="text-gray-700 mb-4">Um pacote de entrada com contrapartidas fundamentais para visibilidade e associação à marca. Ótimo para empresas que iniciam a sua jornada de patrocínio ou com orçamentos mais limitados.</p>
+                    <ul id="package-bronze-list" class="list-disc list-inside text-gray-700 space-y-1"></ul>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white shadow-sm py-6 mt-12">
+        <div class="container text-center text-gray-600 text-sm">
+            &copy; 2025 Sport Algés e Dafundo. Todos os direitos reservados.
+        </div>
+    </footer>
+
+    <script>
+        const counterpartsData = [
+            // Infraestrutura
+            { name: "Receção (Roll-up Banner, TV video promo)", category: "Infraestrutura", description: "Exposição na área de receção.", audience: 3, replication: 2, frequency: 4, visibility: 3, impact: 3 },
+            { name: "Acessos (Backdrop, Roll-up Banner, Stair Branding)", category: "Infraestrutura", description: "Branding em pontos de acesso.", audience: 3, replication: 2, frequency: 4, visibility: 3, impact: 3 },
+            { name: "Bar (Balcão, Mobiliário, Guardanapeiras, Painel de Publicidade)", category: "Infraestrutura", description: "Exposição no bar do clube.", audience: 3, replication: 3, frequency: 4, visibility: 3, impact: 3 },
+            { name: "Balneários (Cacifos)", category: "Infraestrutura", description: "Branding nos cacifos dos balneários.", audience: 2, replication: 2, frequency: 4, visibility: 2, impact: 2 },
+            { name: "Piscina (Bancadas, faixa publicitária, Paineis laterais, Bandeiras, backdrop ginásio)", category: "Infraestrutura", description: "Branding na área da piscina.", audience: 4, replication: 3, frequency: 4, visibility: 4, impact: 4 },
+            { name: "Pavilhão (Backdrop Parede, Toblerone, Painel Mesa de Arbitragem, Marcador de Jogo, Bancadas, Paineis Perímetro, Roll-up, Círculo Central, Tabelas oficiais/laterais)", category: "Infraestrutura", description: "Branding no pavilhão, incluindo áreas de jogo.", audience: 5, replication: 4, frequency: 5, visibility: 5, impact: 5 },
+            { name: "Área de Imprensa (Backdrop flash interview)", category: "Infraestrutura", description: "Branding em entrevistas e flash interviews.", audience: 4, replication: 3, frequency: 3, visibility: 5, impact: 4 },
+            { name: "Campo Exterior (Lona Publicitária, Lona Gigante Triangular)", category: "Infraestrutura", description: "Branding em áreas exteriores.", audience: 3, replication: 2, frequency: 4, visibility: 3, impact: 3 },
+            { name: "Posto Náutico (Lona Publicitária - Av. Brasília)", category: "Infraestrutura", description: "Branding no posto náutico.", audience: 3, replication: 2, frequency: 4, visibility: 3, impact: 3 },
+
+            // Modalidades
+            { name: "Basquetebol (Equipamento de jogo, aquecimento, transmissão, ativações, staff, atletas, ações solidariedade/formação)", category: "Modalidades", description: "Patrocínio abrangente da modalidade de Basquetebol.", audience: 5, replication: 4, frequency: 5, visibility: 5, impact: 5 },
+            { name: "Natação & Polo Aquático (Toucas, fato de banho, atletas, ações solidariedade/formação)", category: "Modalidades", description: "Patrocínio abrangente da modalidade de Natação e Polo Aquático.", audience: 5, replication: 4, frequency: 5, visibility: 5, impact: 5 },
+            { name: "Ginástica Acrobática & Rítmica (Maillot, saraus, representatividade competitiva, ações solidariedade/formação, Flash Mobs)", category: "Modalidades", description: "Patrocínio abrangente da modalidade de Ginástica.", audience: 4, replication: 3, frequency: 4, visibility: 4, impact: 4 },
+            { name: "Judo e outras artes marciais (Kimono, atletas olímpicos, ações solidariedade/formação)", category: "Modalidades", description: "Patrocínio abrangente da modalidade de Judo e Artes Marciais.", audience: 4, replication: 3, frequency: 4, visibility: 5, impact: 5 },
+            { name: "Vela (Coletes, embarcações, velas, ações team building, passeios, solidariedade/formação)", category: "Modalidades", description: "Patrocínio abrangente da modalidade de Vela.", audience: 3, replication: 3, frequency: 3, visibility: 4, impact: 4 },
+
+            // Eventos
+            { name: "Naming Rights (Eventos, prémios, ações, equipas)", category: "Eventos", description: "Direitos de nome sobre elementos chave do clube.", audience: 5, replication: 5, frequency: 5, visibility: 5, impact: 5 },
+            { name: "Banca de Ativação (diferentes tamanhos em X eventos)", category: "Eventos", description: "Espaço para ativação de marca em eventos.", audience: 4, replication: 4, frequency: 3, visibility: 4, impact: 4 },
+            { name: "VIP (Acesso a programação VIP, lugares VIP)", category: "Eventos", description: "Acesso e lugares exclusivos em eventos.", audience: 3, replication: 2, frequency: 2, visibility: 2, impact: 3 },
+            { name: "Organização de Evento especializado para o patrocinador", category: "Eventos", description: "Criação de um evento exclusivo para o patrocinador.", audience: 5, replication: 1, frequency: 1, visibility: 4, impact: 5 },
+
+            // Marketing e Publicidade
+            { name: "Roll-ups, backdrops, lonas, mascotes, áreas de evento, telas digitais, outros tipos de ativação sob consulta", category: "Marketing e Publicidade", description: "Diversos elementos de publicidade visual.", audience: 4, replication: 4, frequency: 4, visibility: 4, impact: 4 },
+            { name: "Brindes/Prémios, merchandising", category: "Marketing e Publicidade", description: "Oferta de produtos com a marca do patrocinador.", audience: 4, replication: 5, frequency: 5, visibility: 4, impact: 4 },
+            { name: "Totens, displays ou Materiais de PDV", category: "Marketing e Publicidade", description: "Materiais de ponto de venda.", audience: 3, replication: 3, frequency: 4, visibility: 3, impact: 3 },
+            { name: "Campanhas de Ativação na Loja do Clube (Sorteios, brindes, descontos, cupões, códigos Promocionais)", category: "Marketing e Publicidade", description: "Ativações promocionais na loja do clube.", audience: 4, replication: 4, frequency: 3, visibility: 4, impact: 5 },
+            { name: "Caderneta de Cromos", category: "Marketing e Publicidade", description: "Inclusão em caderneta de cromos do clube.", audience: 4, replication: 1, frequency: 1, visibility: 3, impact: 3 },
+            { name: "Spot publicitário regular, spot com destaque", category: "Marketing e Publicidade", description: "Spots publicitários em canais do clube.", audience: 4, replication: 4, frequency: 4, visibility: 4, impact: 4 },
+
+            // Audiência (Acesso direto à base de dados para ações de marketing)
+            { name: "Sócios (Brindes/ofertas mensais, newsletter, descontos/promoções, inquéritos, A/B testing, estudos de mercado, testemunhos, mailing list)", category: "Audiência", description: "Acesso direto à base de sócios para diversas ações.", audience: 5, replication: 5, frequency: 5, visibility: 4, impact: 5 },
+            { name: "Atletas (A/B testing, descontos/promoções, inquéritos, testemunhos, modelos para publicidade, Programa de Embaixadores)", category: "Audiência", description: "Acesso direto à base de atletas para diversas ações.", audience: 5, replication: 5, frequency: 5, visibility: 4, impact: 5 },
+            { name: "Famílias (Descontos/Promoções, inquéritos, testemunhos, base de dados)", category: "Audiência", description: "Acesso direto à base de dados de famílias para diversas ações.", audience: 5, replication: 5, frequency: 5, visibility: 4, impact: 5 },
+            { name: "Treinadores (Descontos/promoções, testemunhos, inquéritos, A/B testing)", category: "Audiência", description: "Acesso direto à base de treinadores para diversas ações.", audience: 4, replication: 4, frequency: 4, visibility: 3, impact: 4 },
+
+            // Redes Sociais (com números estimados)
+            { name: "Facebook (10,000 seguidores, média de visualizações, acesso a Grupos como 'Algés acontece' e grupos de Oeiras, Publicação foto/video, story, criação de conteúdo)", category: "Redes Sociais", description: "Presença e ativação na página de Facebook do clube.", audience: 4, replication: 5, frequency: 5, visibility: 4, impact: 4 },
+            { name: "Instagram (5,000 seguidores, média de visualizações, publicação foto/video, story, criação de conteúdo)", category: "Redes Sociais", description: "Presença e ativação na página de Instagram do clube.", audience: 4, replication: 5, frequency: 5, visibility: 4, impact: 4 },
+            { name: "TikTok (1,000 seguidores, likes, média de visualizações, publicação foto/video, criação de conteúdo)", category: "Redes Sociais", description: "Presença e ativação na página de TikTok do clube.", audience: 3, replication: 5, frequency: 4, visibility: 3, impact: 3 },
+            { name: "YouTube (2,000 subscritores, criação de conteúdo formato longo + shorts)", category: "Redes Sociais", description: "Presença e ativação no canal de YouTube do clube.", audience: 4, replication: 4, frequency: 3, visibility: 4, impact: 4 },
+
+            // Comunicação
+            { name: "Newsletter (Spot publicitário)", category: "Comunicação", description: "Inclusão de publicidade na newsletter do clube.", audience: 4, replication: 4, frequency: 4, visibility: 3, impact: 3 },
+            { name: "Mailing List (Partilha de dados de contacto)", category: "Comunicação", description: "Partilha de dados de contacto da mailing list.", audience: 5, replication: 5, frequency: 5, visibility: 5, impact: 5 },
+            { name: "Logotipo (Inclusão em todo o material de comunicação institucional)", category: "Comunicação", description: "Presença do logotipo em materiais institucionais.", audience: 4, replication: 5, frequency: 5, visibility: 4, impact: 4 },
+            { name: "Presença Digital (Destaque no website, link direto, cabeçalho/rodapé, secção patrocinadores, artigos patrocinados)", category: "Comunicação", description: "Destaque online no website do clube.", audience: 5, replication: 5, frequency: 5, visibility: 5, impact: 5 },
+            { name: "Relações Públicas (Menções em comunicados de imprensa, notícias, entrevistas, vídeos, conteúdos media, ações RSC/solidárias)", category: "Comunicação", description: "Envolvimento em atividades de relações públicas e media.", audience: 5, replication: 3, frequency: 2, visibility: 5, impact: 5 },
+            { name: "Produção de Conteúdos Co-branded ('Dicas do Treinador', 'Atletas do mês', 'MVP powered by')", category: "Comunicação", description: "Criação de conteúdo exclusivo com co-branding.", audience: 5, replication: 4, frequency: 3, visibility: 5, impact: 5 },
+
+            // Merchandising
+            { name: "Produto Licenciados (Inserção da marca em produtos: t-shirts, bonés, mochilas, copos)", category: "Merchandising", description: "Marca em produtos licenciados do clube.", audience: 4, replication: 4, frequency: 4, visibility: 4, impact: 4 },
+            { name: "Coleções Exclusivas Co-Branded (Edição Especial de equipamento desportivo)", category: "Merchandising", description: "Criação de coleções de equipamento desportivo exclusivas.", audience: 5, replication: 3, frequency: 2, visibility: 4, impact: 5 },
+            { name: "Brindes Promocionais (Fitas, porta-chaves, pastas, canetas)", category: "Merchandising", description: "Oferta de pequenos brindes promocionais.", audience: 3, replication: 5, frequency: 5, visibility: 3, impact: 3 },
+            { name: "Venda de Produtos do Patrocinador (Exposição na loja oficial do clube e website)", category: "Merchandising", description: "Venda de produtos do patrocinador nas plataformas do clube.", audience: 4, replication: 4, frequency: 4, visibility: 4, impact: 4 }
+        ];
+
+        function calculateTotalScore(counterpart) {
+            return counterpart.audience + counterpart.replication + counterpart.frequency + counterpart.visibility + counterpart.impact;
+        }
+
+        counterpartsData.forEach(c => {
+            c.totalScore = calculateTotalScore(c);
+        });
+
+        const rankedCounterparts = [...counterpartsData].sort((a, b) => b.totalScore - a.totalScore);
+
+        function assignPackages(rankedList) {
+            const total = rankedList.length;
+            const goldCount = Math.ceil(total * 0.25); // Top 25%
+            const silverCount = Math.ceil(total * 0.40); // Next 40%
+            
+            const packages = {
+                gold: [],
+                silver: [],
+                bronze: []
+            };
+
+            rankedList.forEach((c, index) => {
+                if (index < goldCount) {
+                    packages.gold.push(c);
+                } else if (index < goldCount + silverCount) {
+                    packages.silver.push(c);
+                } else {
+                    packages.bronze.push(c);
+                }
+            });
+            return packages;
+        }
+
+        const packages = assignPackages(rankedCounterparts);
+
+        // Render Counterparts Table
+        const tableBody = document.getElementById('counterparts-table-body');
+        counterpartsData.forEach(c => {
+            const row = tableBody.insertRow();
+            row.innerHTML = `
+                <td class="text-gray-800">${c.name}</td>
+                <td class="text-gray-600">${c.category}</td>
+                <td class="text-gray-700">${c.audience}</td>
+                <td class="text-gray-700">${c.replication}</td>
+                <td class="text-gray-700">${c.frequency}</td>
+                <td class="text-gray-700">${c.visibility}</td>
+                <td class="text-gray-700">${c.impact}</td>
+                <td><span class="score-badge">${c.totalScore}</span></td>
+            `;
+        });
+
+        // Render Ranked List
+        const rankedListElement = document.getElementById('ranked-list');
+        rankedCounterparts.forEach((c, index) => {
+            const listItem = document.createElement('li');
+            listItem.className = 'flex items-center justify-between p-2 bg-gray-50 rounded-md';
+            listItem.innerHTML = `
+                <span class="text-gray-800 font-medium">${index + 1}. ${c.name}</span>
+                <span class="score-badge">${c.totalScore}</span>
+            `;
+            rankedListElement.appendChild(listItem);
+        });
+
+        // Render Packages
+        const packageGoldList = document.getElementById('package-gold-list');
+        packages.gold.forEach(c => {
+            const listItem = document.createElement('li');
+            listItem.textContent = c.name;
+            packageGoldList.appendChild(listItem);
+        });
+
+        const packageSilverList = document.getElementById('package-silver-list');
+        packages.silver.forEach(c => {
+            const listItem = document.createElement('li');
+            listItem.textContent = c.name;
+            packageSilverList.appendChild(listItem);
+        });
+
+        const packageBronzeList = document.getElementById('package-bronze-list');
+        packages.bronze.forEach(c => {
+            const listItem = document.createElement('li');
+            listItem.textContent = c.name;
+            packageBronzeList.appendChild(listItem);
+        });
+    </script>
+</body>
+</html>

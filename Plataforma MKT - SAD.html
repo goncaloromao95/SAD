@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="pt" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Chosen Palette: Warm Neutrals & Professional Blue -->
+    <!-- Application Structure Plan: A thematic, single-page scroll application designed to build a persuasive sales argument. The structure is: 1) Hero section with key metrics to grab attention. 2) The Market Opportunity, validating the club's position. 3) A deep dive into the two Core Assets (Digital & Community), using interactive charts to justify value. 4) A new section to visualize the community demographics and urban impact. 5) The Value Matrix, interactively breaking down the premier sponsorship package to demonstrate clear ROI. 6) A new section for social proof (testimonials) and package comparison. 7) The Partnership Blueprint. This narrative flow (Hook -> Justification -> Proof -> Visualization -> ROI -> Trust -> Partnership) is more intuitive and compelling for a potential sponsor. -->
+    <!-- Visualization & Content Choices: 
+        - Hero Stats (Inform): Vanilla JS counter for high impact.
+        - CPM Comparison Chart (Compare): Chart.js Bar Chart.
+        - Demographic Chart (Inform): Chart.js Doughnut chart to show community composition.
+        - Urban Impact Map (Organize/Inform): HTML/CSS with JS hover effects to create an interactive map without map libraries/SVG.
+        - Value Matrix Breakdown (Organize/Inform): HTML/CSS cards with a Vanilla JS-powered animated total.
+        - Package Comparison Table (Compare): Styled HTML table to clearly differentiate packages.
+        - Testimonials (Inform): Styled HTML cards for social proof.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <title>Análise de Valor 360° | Sport Algés e Dafundo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f5; /* Warm Neutral - Zinc 100 */
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 40vh;
+            max-height: 400px;
+            width: 100%;
+            max-width: 600px;
+        }
+        .doughnut-chart-container {
+            position: relative;
+            margin: auto;
+            height: 35vh;
+            max-height: 300px;
+            width: 100%;
+            max-width: 300px;
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #fbbf24; /* Warm Accent - Amber 400 */
+        }
+        .stat-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .value-breakdown-card {
+            background: white;
+            border-left: 4px solid #3b82f6; /* Professional Blue */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .value-breakdown-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .map-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: rgba(59, 130, 246, 0.7);
+            border-radius: 50%;
+            border: 2px solid white;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .map-marker:hover {
+            transform: scale(1.5);
+        }
+        .map-tooltip {
+            display: none;
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #1e293b;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .map-marker:hover .map-tooltip {
+            display: block;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <nav class="bg-slate-800 text-white sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="font-bold text-xl">SAD</div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#ativos" class="nav-link">Ativos</a>
+                <a href="#visualizacao" class="nav-link">Visualização</a>
+                <a href="#valorizacao" class="nav-link">Matriz de Valor</a>
+                <a href="#planos" class="nav-link">Planos</a>
+                <a href="#parceria" class="nav-link">Parceria</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-slate-900 text-white py-20 px-6">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-black uppercase">Mais do que um Patrocínio.</h1>
+            <h2 class="text-3xl md:text-5xl font-bold text-amber-400">Uma Plataforma de Marketing.</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-slate-300">Aceda a uma comunidade apaixonada e a um público digital massivo. Veja como um investimento no Sport Algés e Dafundo se traduz num retorno claro e mensurável.</p>
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+                <div class="stat-card bg-slate-800">
+                    <div id="counter-community" class="text-5xl font-bold text-white">5.500</div>
+                    <div class="text-slate-400 mt-2">Pessoas na Comunidade (Atletas e Famílias)</div>
+                </div>
+                <div class="stat-card bg-slate-800">
+                    <div id="counter-impressions" class="text-5xl font-bold text-white">5.000.000</div>
+                    <div class="text-slate-400 mt-2">Impressões Anuais Estimadas</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-6 md:p-10 space-y-20">
+
+        <section id="ativos">
+            <h2 class="text-3xl font-bold text-slate-800 text-center">Os Nossos Ativos: Quantidade e Qualidade</h2>
+            <p class="mt-2 max-w-3xl mx-auto text-center">O nosso valor assenta em dois pilares: um alcance digital massivo e uma comunidade com uma afinidade inigualável.</p>
+
+            <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="order-2 lg:order-1">
+                    <h3 class="text-2xl font-bold text-slate-800">O Capital Digital: Alcance Mensurável</h3>
+                    <p class="mt-2 text-slate-600">Os nossos 5 milhões de impressões não são apenas um número. Representam um canal de comunicação direto, que valorizamos usando a metodologia de Valor Equivalente em Publicidade (VEP). Comparamos o custo de um anúncio connosco versus o mercado, demonstrando o nosso valor premium.</p>
+                    <p class="mt-4 text-sm text-slate-500">O gráfico demonstra porque o nosso CPM (Custo por Mil Impressões) justificado de **30€** para o digital é um investimento mais inteligente: oferece um público-alvo de nicho com uma confiança muito superior à da publicidade genérica, a um custo competitivo face aos publishers de topo.</p>
+                </div>
+                <div class="order-1 lg:order-2 chart-container">
+                    <canvas id="cpmChart"></canvas>
+                </div>
+            </div>
+
+            <div class="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800">O Capital Comunitário: O "Multiplicador de Goodwill"</h3>
+                    <p class="mt-2 text-slate-600">O nosso ativo mais valioso é a nossa "tribo desportiva" de mais de 5.500 pessoas. A associação a esta comunidade, unida por paixão e lealdade, transfere valores positivos para a sua marca de uma forma que a publicidade tradicional não consegue.</p>
+                    <ul class="mt-4 space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-3 mt-1">✔</span>
+                            <div>
+                                <h4 class="font-semibold">Transferência de Lealdade</h4>
+                                <p class="text-sm text-slate-600">Estudos mostram que a identificação dos fãs com a sua equipa se traduz em atitudes positivas e maior intenção de compra dos produtos do patrocinador.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-3 mt-1">✔</span>
+                            <div>
+                                <h4 class="font-semibold">Imagem de Marca e Goodwill</h4>
+                                <p class="text-sm text-slate-600">Alinhe a sua marca com valores de saúde, disciplina e envolvimento local, gerando uma perceção positiva que impulsiona o negócio.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex justify-center">
+                    <img src="https://placehold.co/500x350/e2e8f0/334155?text=Comunidade+Unida" alt="Ilustração da comunidade do clube" class="rounded-lg shadow-md">
+                </div>
+            </div>
+        </section>
+        
+        <hr>
+
+        <section id="visualizacao">
+            <h2 class="text-3xl font-bold text-slate-800 text-center">A Nossa Comunidade em Foco</h2>
+            <p class="mt-2 max-w-3xl mx-auto text-center">Para além dos números, é crucial perceber *quem* alcançamos e *onde* o fazemos. Estes dados transformam o nosso alcance em audiências e localizações concretas.</p>
+            <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800">Demografia da Comunidade</h3>
+                    <p class="mt-2 text-slate-600">A nossa comunidade é multi-geracional. Alcançamos não só os jovens atletas, mas também os seus pais (com poder de decisão) e avós, criando uma oportunidade única para marcas com um público-alvo abrangente.</p>
+                    <div class="doughnut-chart-container mt-4">
+                        <canvas id="demographicChart"></canvas>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800">Mapa de Impacto Urbano</h3>
+                    <p class="mt-2 text-slate-600">A nossa visibilidade concentra-se na frente ribeirinha e no coração de Algés, zonas de elevado tráfego pedonal, comunitário e rodoviário. Passe o rato sobre os pontos para ver as impressões estimadas.</p>
+                    <div class="relative mt-4 rounded-lg bg-slate-200 w-full h-64 md:h-80 shadow-inner">
+                        <img src=""C:\Users\groma\Desktop\1.png"" class="absolute inset-0 w-full h-full object-cover" alt="Mapa da zona de Algés e frente ribeirinha de Lisboa">
+                        <div class="map-marker" style="top: 60%; left: 80%;">
+                            <div class="map-tooltip">Av. Brasília: +2.5M Impressões/Ano</div>
+                        </div>
+                        <div class="map-marker" style="top: 70%; left: 55%;">
+                            <div class="map-tooltip">Zona de Belém: +750k Impressões/Ano</div>
+                        </div>
+                        <div class="map-marker" style="top: 50%; left: 35%;">
+                            <div class="map-tooltip">Posto Náutico (Dafundo): +500k Impressões/Ano</div>
+                        </div>
+                        <div class="map-marker" style="top: 25%; left: 20%;">
+                            <div class="map-tooltip">Sede SAD (Algés): +250k Impressões/Ano</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="valorizacao" class="text-center">
+            <h2 class="text-3xl font-bold text-slate-800">A Matriz de Valor: Um Retorno Transparente e Realista</h2>
+            <p class="mt-2 max-w-3xl mx-auto">Para o nosso primeiro ano, criámos uma proposta de "Parceiro Fundador" com um valor excecional. A análise detalhada das nossas contrapartidas demonstra um valor de mercado real que torna o investimento numa oportunidade estratégica única.</p>
+
+            <div class="my-10 p-8 bg-white rounded-lg shadow-lg max-w-3xl mx-auto">
+                <p class="text-lg text-slate-600">Valor de Mercado Realista do Pacote Ouro:</p>
+                <div id="total-value" class="text-7xl font-black text-blue-600 my-2">€0</div>
+                <p class="text-slate-500">Este valor de mercado, quando comparado com um investimento de **50.000€**, demonstra um retorno sobre o investimento imediato e substancial.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left mb-8">
+                <div class="value-breakdown-card p-5 rounded-lg" data-value="30000">
+                    <h4 class="font-bold">Impacto Exterior e Urbano</h4>
+                    <p class="text-2xl font-bold text-blue-500">€30.000</p>
+                    <p class="text-xs text-slate-500 mt-1">3.75M impressões @ €8 CPM (benchmark OOH)</p>
+                </div>
+                <div class="value-breakdown-card p-5 rounded-lg" data-value="12500">
+                    <h4 class="font-bold">Uniformes e Exposição Mediática</h4>
+                    <p class="text-2xl font-bold text-blue-500">€12.500</p>
+                    <p class="text-xs text-slate-500 mt-1">500k impressões @ €25 CPM (valor de Relações Públicas)</p>
+                </div>
+                <div class="value-breakdown-card p-5 rounded-lg" data-value="5070">
+                    <h4 class="font-bold">Presença Digital</h4>
+                    <p class="text-2xl font-bold text-blue-500">€5.070</p>
+                    <p class="text-xs text-slate-500 mt-1">169k impressões @ €30 CPM (VEP premium)</p>
+                </div>
+                <div class="value-breakdown-card p-5 rounded-lg" data-value="1600">
+                    <h4 class="font-bold">Exposição em Eventos</h4>
+                    <p class="text-2xl font-bold text-blue-500">€1.600</p>
+                    <p class="text-xs text-slate-500 mt-1">80k impressões @ €20 CPM (audiência cativa)</p>
+                </div>
+            </div>
+            
+            <p class="text-center font-semibold text-slate-800 text-lg my-8">Valor das Impressões (€49.170) + Valor das Ativações e Direitos:</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+                <div class="value-breakdown-card p-5 rounded-lg" data-value="10000">
+                    <h4 class="font-bold">Produção de Conteúdo Co-Branded</h4>
+                    <p class="text-2xl font-bold text-blue-500">€10.000</p>
+                    <p class="text-xs text-slate-500 mt-1">Custo de oportunidade (ex: vídeos, sessão fotográfica)</p>
+                </div>
+                <div class="value-breakdown-card p-5 rounded-lg" data-value="7000">
+                    <h4 class="font-bold">2 Ações de Ativação</h4>
+                    <p class="text-2xl font-bold text-blue-500">€7.000</p>
+                    <p class="text-xs text-slate-500 mt-1">Custo de oportunidade de criar eventos de raiz</p>
+                </div>
+                <div class="value-breakdown-card p-5 rounded-lg" data-value="4000">
+                    <h4 class="font-bold">Direitos de Hospitalidade</h4>
+                    <p class="text-2xl font-bold text-blue-500">€4.000</p>
+                    <p class="text-xs text-slate-500 mt-1">Valor como ferramenta de CRM e networking com parceiros</p>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="planos">
+            <h2 class="text-3xl font-bold text-slate-800 text-center">Prova Social e Planos de Parceria</h2>
+            <p class="mt-2 max-w-3xl mx-auto text-center">Junte-se a marcas de referência que confiam no nosso trabalho para construir uma parceria de sucesso.</p>
+
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="p-6 bg-white rounded-lg shadow-sm flex flex-col items-center text-center">
+                    <img src="https://placehold.co/150x50/000000/ffffff?text=BP" alt="Logo BP" class="h-12 mb-4">
+                    <p class="text-slate-600 italic">"A parceria com o Sport Algés e Dafundo permite-nos estar ligados a uma comunidade vibrante e aos valores do desporto. É uma colaboração que gera um impacto positivo e real."</p>
+                    <p class="mt-4 font-semibold">- Direção de Marketing, BP Portugal</p>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-sm flex flex-col items-center text-center">
+                    <img src="https://placehold.co/150x50/ff0000/ffffff?text=MITSUBISHI" alt="Logo Mitsubishi" class="h-12 mb-4">
+                    <p class="text-slate-600 italic">"A visibilidade que obtemos através do Algés, especialmente nas suas embarcações e eventos, dá à nossa marca uma presença única e de grande prestígio na frente ribeirinha de Lisboa."</p>
+                    <p class="mt-4 font-semibold">- Direção de Marketing, Mitsubishi Motors</p>
+                </div>
+            </div>
+
+            <div class="mt-16 overflow-x-auto">
+                <table class="w-full min-w-max text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-800 text-white">
+                            <th class="p-4 font-semibold">Contrapartida</th>
+                            <th class="p-4 font-semibold text-center">Bronze</th>
+                            <th class="p-4 font-semibold text-center">Prata</th>
+                            <th class="p-4 font-semibold text-center">Ouro</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white">
+                        <tr class="border-b"><td class="p-3 font-semibold text-slate-800" colspan="4">Visibilidade</td></tr>
+                        <tr class="border-b"><td class="p-3">Visibilidade em Instalações (Geral)</td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td></tr>
+                        <tr class="border-b"><td class="p-3">Visibilidade em Áreas Nobres (Piscina, Pavilhão)</td><td class="p-3 text-center text-red-500"></td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td></tr>
+                        <tr class="border-b"><td class="p-3">Ativação de Marca em Equipamento Desportivo</td><td class="p-3 text-center text-red-500"></td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td></tr>
+                        <tr class="border-b"><td class="p-3">Publicidade Visual (Roll-ups, Lonas)</td><td class="p-3 text-center text-red-500"></td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td></tr>
+
+                        <tr class="border-b"><td class="p-3 font-semibold text-slate-800" colspan="4">Ativação & Eventos</td></tr>
+                        <tr class="border-b"><td class="p-3">Banca de Ativação em Eventos</td><td class="p-3 text-center text-red-500"></td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td></tr>
+                        <tr class="border-b"><td class="p-3">Acesso VIP a Eventos</td><td class="p-3 text-center text-red-500"></td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td></tr>
+                        <tr class="border-b"><td class="p-3">Brindes/Merchandising com Marca</td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td></tr>
+                        
+                        <tr class="border-b"><td class="p-3 font-semibold text-slate-800" colspan="4">Digital & Comunicação</td></tr>
+                        <tr class="border-b"><td class="p-3">Logotipo em Material Institucional</td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td></tr>
+                        <tr class="border-b"><td class="p-3">Destaque no Website do Clube</td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td></tr>
+                        <tr class="border-b"><td class="p-3">Publicações Patrocinadas (Redes Sociais)</td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td></tr>
+                        <tr class="border-b"><td class="p-3">Inclusão em Newsletter/Mailing List</td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td><td class="p-3 text-center text-green-600 font-bold">✔</td></tr>
+                        <tr class="border-b"><td class="p-3">Produção de Conteúdo Co-branded</td><td class="p-3 text-center text-red-500"></td><td class="p-3 text-center text-red-500"></td><td class="p-3 text-center text-green-600 font-bold">✔</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="parceria">
+            <h2 class="text-3xl font-bold text-slate-800 text-center">A Nossa Promessa: Uma Parceria Ativa</h2>
+            <p class="mt-2 max-w-3xl mx-auto text-center">Não vendemos apenas espaço. Oferecemos uma parceria estratégica para garantir que o seu investimento gera o máximo retorno.</p>
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6 bg-white rounded-lg shadow-sm text-center">
+                    <h3 class="font-bold text-xl">Consultoria</h3>
+                    <p class="text-sm mt-2 text-slate-600">Trabalhamos consigo para alinhar os seus objetivos de negócio com os nossos ativos, desenvolvendo um plano de ativação anual personalizado.</p>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-sm text-center">
+                    <h3 class="font-bold text-xl">Flexibilidade</h3>
+                    <p class="text-sm mt-2 text-slate-600">Utilizamos a nossa matriz de valor para construir pacotes personalizados que se ajustam às suas necessidades e orçamento específicos.</p>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-sm text-center">
+                    <h3 class="font-bold text-xl">Transparência</h3>
+                    <p class="text-sm mt-2 text-slate-600">Fornecemos relatórios de cumprimento detalhados, com métricas e evidências visuais, para que possa medir e justificar o seu ROI.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-white mt-20">
+        <div class="container mx-auto p-10 text-center">
+            <h3 class="text-2xl font-bold">Vamos Construir Valor Juntos.</h3>
+            <p class="mt-2 max-w-xl mx-auto text-slate-300">Contacte-nos para explorar como uma parceria com o Sport Algés e Dafundo pode impulsionar a sua marca.</p>
+            <a href="mailto:parcerias@alges.pt" class="mt-6 inline-block bg-amber-400 text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-amber-300 transition-colors">Iniciar Conversa</a>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        function animateCurrencyCounter(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentVal = Math.floor(progress * (end - start) + start);
+                element.innerHTML = '€' + currentVal.toLocaleString('pt-PT');
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+        
+        function animateNumberCounter(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const currentVal = Math.floor(progress * (end - start) + start);
+                element.innerHTML = currentVal.toLocaleString('pt-PT');
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        const observeElement = (elementId, callback, options = { threshold: 0.5 }) => {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        callback(element);
+                        observer.unobserve(element);
+                    }
+                });
+            }, options);
+            observer.observe(element);
+        };
+
+        observeElement('counter-community', el => {
+            let end = parseInt(el.textContent.replace(/\./g, ''));
+            animateNumberCounter(el, 0, end, 1500);
+        });
+        observeElement('counter-impressions', el => {
+            let end = parseInt(el.textContent.replace(/\./g, ''));
+            animateNumberCounter(el, 0, end, 1500);
+        });
+        observeElement('total-value', el => animateCurrencyCounter(el, 0, 70170, 2000));
+        
+        const cpmCtx = document.getElementById('cpmChart')?.getContext('2d');
+        if (cpmCtx) {
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                  return label.join(' ');
+                }
+                return label;
+            };
+
+            const cpmChartData = {
+                labels: ['CPM Genérico (Redes Sociais)', 'CPM Justificado (Algés)', 'CPM Premium (Publishers)'],
+                datasets: [{
+                    label: 'Custo por Mil Impressões (€)',
+                    data: [10, 30, 95],
+                    backgroundColor: ['#94a3b8', '#fbbf24', '#334155'],
+                    borderColor: ['#94a3b8', '#fbbf24', '#334155'],
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            };
+
+            const cpmChartOptions = {
+                type: 'bar',
+                data: cpmChartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: { title: tooltipTitleCallback },
+                            backgroundColor: '#1e293b',
+                            titleColor: '#f8fafc',
+                            bodyColor: '#cbd5e1',
+                            padding: 10,
+                            cornerRadius: 4,
+                            displayColors: false,
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: { color: '#e2e8f0' },
+                            ticks: {
+                                callback: function(value) { return '€' + value; },
+                                color: '#475569'
+                            }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { color: '#334155', font: { weight: '600' } }
+                        }
+                    }
+                }
+            };
+            observeElement('cpmChart', () => new Chart(cpmCtx, cpmChartOptions));
+        }
+
+        const demographicCtx = document.getElementById('demographicChart')?.getContext('2d');
+        if (demographicCtx) {
+            const demographicData = {
+                labels: ['Atletas (Jovens)', 'Pais (35-50 anos)', 'Avós (60-80 anos)'],
+                datasets: [{
+                    data: [48, 35, 17],
+                    backgroundColor: ['#3b82f6', '#fbbf24', '#334155'],
+                    borderColor: '#f4f4f5',
+                    borderWidth: 4,
+                }]
+            };
+            const demographicOptions = {
+                type: 'doughnut',
+                data: demographicData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#475569',
+                                boxWidth: 15,
+                                padding: 15,
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            };
+            observeElement('demographicChart', () => new Chart(demographicCtx, demographicOptions));
+        }
+    });
+    </script>
+
+</body>
+</html>

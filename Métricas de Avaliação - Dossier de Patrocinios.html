@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apresentação: Ferramentas de Mensuração de Patrocínio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+            overflow: hidden;
+        }
+        .presentation-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-y: auto;
+        }
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            max-width: 900px;
+            margin: auto;
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            padding: 2.5rem;
+            overflow-y: auto;
+            position: relative;
+        }
+        .slide.active {
+            display: block;
+        }
+        .section-title {
+            color: #0d3b66;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .nav-button {
+            background-color: #0d3b66;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .nav-button:hover {
+            background-color: #3c6e71;
+        }
+        .nav-button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .sidebar-nav-item {
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: background-color 0.2s, color 0.2s;
+            color: #343a40;
+            font-weight: 500;
+        }
+        .sidebar-nav-item:hover {
+            background-color: #f0f4f8;
+        }
+        .sidebar-nav-item.active {
+            background-color: #d4a373;
+            color: white;
+            font-weight: bold;
+        }
+        ul.metrics-list li {
+            margin-bottom: 0.5rem;
+        }
+        ul.metrics-list li strong {
+            color: #0d3b66;
+        }
+        @media (max-width: 768px) {
+            .presentation-container {
+                flex-direction: column;
+                height: auto;
+            }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                flex-direction: row;
+                justify-content: center;
+                padding: 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .sidebar-nav-item {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.875rem;
+            }
+            .main-content {
+                padding: 1rem;
+                height: auto;
+            }
+            .slide {
+                padding: 1.5rem;
+                min-height: 80vh;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container">
+        <div class="sidebar">
+            <div>
+                <h2 class="text-xl font-bold text-[#0d3b66] mb-6">Menu</h2>
+                <ul class="space-y-2">
+                    <li class="sidebar-nav-item active" data-slide-index="0">Introdução</li>
+                    <li class="sidebar-nav-item" data-slide-index="1">Visibilidade e Alcance</li>
+                    <li class="sidebar-nav-item" data-slide-index="2">Engajamento</li>
+                    <li class="sidebar-nav-item" data-slide-index="3">Negócio/Vendas (ROI)</li>
+                    <li class="sidebar-nav-item" data-slide-index="4">Marca (ROO)</li>
+                    <li class="sidebar-nav-item" data-slide-index="5">RSC</li>
+                    <li class="sidebar-nav-item" data-slide-index="6">Considerações Finais</li>
+                </ul>
+            </div>
+            <div class="flex justify-between mt-8">
+                <button id="prev-slide" class="nav-button" disabled>Anterior</button>
+                <button id="next-slide" class="nav-button">Próximo</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <!-- Slide 0: Introduction -->
+            <div id="slide-0" class="slide active">
+                <h2 class="text-3xl md:text-4xl section-title">Mensuração de Métricas de Patrocínio</h2>
+                <p class="text-gray-700 text-center mb-8">Para avaliar o retorno de um patrocínio (ROI e ROO), é essencial utilizar uma combinação de ferramentas e metodologias que cubram as diversas dimensões do impacto.</p>
+                <div class="card p-6">
+                    <h3 class="text-xl font-bold text-[#0d3b66] mb-4">O que um Patrocinador Procura?</h3>
+                    <p class="text-gray-700">Patrocinadores buscam demonstrar o **retorno do seu investimento (ROI)** e o **retorno sobre os seus objetivos (ROO)**. Isso inclui visibilidade, engajamento, impacto nas vendas, melhoria da imagem da marca e contribuição para a responsabilidade social corporativa (RSC).</p>
+                </div>
+            </div>
+
+            <!-- Slide 1: Métricas de Visibilidade e Alcance -->
+            <div id="slide-1" class="slide">
+                <h2 class="text-2xl md:text-3xl section-title">1. Métricas de Visibilidade e Alcance</h2>
+                <p class="text-gray-700 mb-6 text-center">Estas ferramentas ajudam a quantificar a exposição da marca do patrocinador.</p>
+                <div class="card p-6 space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Google Analytics (ou similares)</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Monitoriza o tráfego no website do clube. Pode-se rastrear visitas a páginas de patrocinadores, cliques em logótipos/banners e o tempo de permanência. Se o patrocinador tiver um link dedicado, pode-se ver o tráfego de referência.</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Visualizações de página, visitantes únicos, tempo na página, taxa de cliques (CTR) em banners/links, origem do tráfego.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Ferramentas de Análise de Redes Sociais</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Fornecem dados detalhados sobre o desempenho das publicações e do perfil do clube nas redes sociais onde a marca do patrocinador é visível (Nativas: Facebook Insights, Instagram Insights, TikTok Analytics, YouTube Analytics; ou Terceiros: Hootsuite, Sprout Social, Buffer).</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Impressões, alcance, visualizações de vídeo, número de seguidores, menções da marca, partilhas, comentários.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Ferramentas de Monitorização de Media</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Rastream o número de menções da marca do patrocinador (e do clube) em notícias, artigos, vídeos e transmissões, tanto online como offline (ex: Cision, Meltwater, Knewin).</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Número de menções, sentimento (positivo/negativo), alcance estimado da audiência mediática, valor equivalente de publicidade (AVE).</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Sistemas de Contagem de Público/Acesso</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Medir o número de pessoas que frequentam as instalações do clube (receção, pavilhão, piscina) onde o patrocinador tem visibilidade (roll-ups, painéis, etc.).</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Número de visitantes, frequência de visitas.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Métricas de Engajamento -->
+            <div id="slide-2" class="slide">
+                <h2 class="text-2xl md:text-3xl section-title">2. Métricas de Engajamento</h2>
+                <p class="text-gray-700 mb-6 text-center">Estas ferramentas avaliam a interação do público com a marca do patrocinador.</p>
+                <div class="card p-6 space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Ferramentas de Análise de Redes Sociais</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Além do alcance, medem a qualidade da interação.</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Taxa de engajamento (likes, comentários, partilhas por alcance/impressões), cliques em chamadas para ação.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Plataformas de Inquéritos Online</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Realizar inquéritos diretos aos sócios, atletas e famílias para medir a recordação da marca do patrocinador, a perceção e a intenção de compra (ex: Google Forms, SurveyMonkey, Typeform).</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Recordação espontânea/assistida da marca, intenção de compra, feedback qualitativo sobre as ativações.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Sistemas de CRM e Bases de Dados do Clube</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Se o patrocinador tiver acesso (com consentimento) a dados de contacto para campanhas diretas, pode medir a taxa de abertura de emails, cliques em links, etc.</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Taxas de abertura, taxas de clique, conversões (se aplicável).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Métricas de Negócio/Vendas (ROI) -->
+            <div id="slide-3" class="slide">
+                <h2 class="text-2xl md:text-3xl section-title">3. Métricas de Negócio/Vendas (ROI)</h2>
+                <p class="text-gray-700 mb-6 text-center">Estas ferramentas ajudam a ligar o patrocínio a resultados financeiros.</p>
+                <div class="card p-6 space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Códigos Promocionais/URLs Únicos</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Criar códigos de desconto exclusivos para membros do clube ou URLs de destino únicos para campanhas de patrocínio.</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Número de utilizações do código, vendas geradas através do URL único, taxa de conversão.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Sistemas de Ponto de Venda (POS) e E-commerce do Patrocinador</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Monitorizar o aumento de vendas ou tráfego em lojas físicas ou online que possam ser atribuídos ao patrocínio (requer coordenação com o patrocinador).</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Volume de vendas, receita gerada, número de transações.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Ferramentas de Atribuição de Marketing</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Ajudam a entender como diferentes pontos de contacto (incluindo o patrocínio) contribuem para a jornada do cliente até à compra (ex: Google Ads, Salesforce Marketing Cloud).</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Atribuição de vendas, custo por aquisição (CPA) de clientes.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Métricas de Marca (ROO) -->
+            <div id="slide-4" class="slide">
+                <h2 class="text-2xl md:text-3xl section-title">4. Métricas de Marca (ROO)</h2>
+                <p class="text-gray-700 mb-6 text-center">Estas ferramentas avaliam o impacto do patrocínio na imagem e reputação da marca.</p>
+                <div class="card p-6 space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Inquéritos de Marca (Brand Surveys)</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Medir a perceção da marca, o reconhecimento, a lealdade e a associação a valores antes e depois do patrocínio, tanto na comunidade do clube como em grupos de controlo (ex: SurveyMonkey, Qualtrics).</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Brand awareness (reconhecimento), brand perception (atributos associados à marca), brand loyalty (intenção de recomendar/recomprar).</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Ferramentas de Social Listening</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Monitorizar conversas online sobre a marca do patrocinador e do clube, identificando o sentimento e os temas associados (ex: Brandwatch, Talkwalker).</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Sentimento da marca, share of voice (quota de voz), tópicos de discussão.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: Métricas de Responsabilidade Social Corporativa (RSC) -->
+            <div id="slide-5" class="slide">
+                <h2 class="text-2xl md:text-3xl section-title">5. Métricas de Responsabilidade Social Corporativa (RSC)</h2>
+                <p class="text-gray-700 mb-6 text-center">Estas ferramentas quantificam o impacto social e ambiental do patrocínio.</p>
+                <div class="card p-6 space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Relatórios de Atividade do Clube</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Documentar o número de participantes em programas sociais, eventos de solidariedade, ações de formação, etc., que são apoiados pelo patrocinador.</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Número de beneficiários, horas de voluntariado, descrição das atividades e resultados qualitativos.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Estudos de Caso e Testemunhos</h3>
+                        <p class="text-gray-700 mt-2">**Para que serve:** Recolher histórias de sucesso e depoimentos de atletas, famílias ou membros da comunidade que foram impactados pelas ações apoiadas pelo patrocinador.</p>
+                        <ul class="metrics-list list-disc list-inside text-gray-700 mt-2">
+                            <li>**Métricas:** Narrativas qualitativas, vídeos de testemunho, fotos de impacto.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: Considerações Finais -->
+            <div id="slide-6" class="slide">
+                <h2 class="text-2xl md:text-3xl section-title">Considerações Finais</h2>
+                <div class="card p-6 space-y-4">
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Integração de Dados</h3>
+                        <p class="text-gray-700">É crucial que o clube e o patrocinador trabalhem em conjunto para partilhar dados e integrar as ferramentas de mensuração.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Linha de Base</h3>
+                        <p class="text-gray-700">Para medir o impacto, é fundamental ter dados de linha de base (antes do patrocínio) para comparar com os resultados pós-patrocínio.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Relatórios Regulares</h3>
+                        <p class="text-gray-700">Apresentar relatórios de desempenho regulares (mensais, trimestrais) ao patrocinador, destacando as métricas mais relevantes para os seus objetivos.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-[#0d3b66]">Qualidade vs. Quantidade</h3>
+                        <p class="text-gray-700">Embora as métricas quantitativas sejam importantes, não subestime o poder das histórias e do impacto qualitativo, especialmente para patrocínios focados em RSC.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const prevButton = document.getElementById('prev-slide');
+        const nextButton = document.getElementById('next-slide');
+        const sidebarItems = document.querySelectorAll('.sidebar-nav-item');
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active');
+                if (i === index) {
+                    slide.classList.add('active');
+                    slide.scrollTop = 0;
+                }
+            });
+            updateNavigationButtons();
+            updateSidebarActiveState();
+        }
+
+        function updateNavigationButtons() {
+            prevButton.disabled = currentSlideIndex === 0;
+            nextButton.disabled = currentSlideIndex === totalSlides - 1;
+        }
+
+        function updateSidebarActiveState() {
+            sidebarItems.forEach((item, i) => {
+                item.classList.remove('active');
+                if (i === currentSlideIndex) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        prevButton.addEventListener('click', () => {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                showSlide(currentSlideIndex);
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            if (currentSlideIndex < totalSlides - 1) {
+                currentSlideIndex++;
+                showSlide(currentSlideIndex);
+            }
+        });
+
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const index = parseInt(item.dataset.slideIndex);
+                if (!isNaN(index) && index !== currentSlideIndex) {
+                    currentSlideIndex = index;
+                    showSlide(currentSlideIndex);
+                }
+            });
+        });
+
+        showSlide(currentSlideIndex);
+    </script>
+</body>
+</html>

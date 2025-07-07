@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Chosen Palette: Warm Neutrals & Professional Blue -->
+    <!-- Application Structure Plan: A thematic, single-page scroll application designed to build a persuasive sales argument. The structure is: 1) Hero section with key metrics to grab attention. 2) The Market Opportunity, validating the club's position. 3) A deep dive into the two Core Assets (Digital & Community), using interactive charts to justify value. 4) The Value Matrix, interactively breaking down the premier sponsorship package to demonstrate clear ROI. 5) The Partnership Blueprint, showcasing professionalism and commitment. This narrative flow (Hook -> Justification -> Proof -> Partnership) is more intuitive and compelling for a potential sponsor than the linear report structure. -->
+    <!-- Visualization & Content Choices: 
+        - Hero Stats (Inform): Vanilla JS counter for high impact. Justification: Grabs immediate attention with core numbers.
+        - CPM Comparison Chart (Compare): Chart.js Bar Chart. Justification: Best way to compare discrete value categories (Generic vs. Algés vs. Premium) and visually justify the club's premium positioning. Interaction: Tooltips on hover.
+        - Value Matrix Breakdown (Organize/Inform): HTML/CSS cards with a Vanilla JS-powered animated total. Justification: Deconstructs the total package value into digestible parts, making the final number transparent and less daunting. Interaction: Number animates on scroll.
+        - Strategic Recommendations (Inform): Styled HTML/CSS cards with icons. Justification: Clearly presents the value-add services (consulting, reporting) in a visually organized manner.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <title>Análise de Valor 360° | Sport Algés e Dafundo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f5; /* Warm Neutral - Zinc 100 */
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 40vh;
+            max-height: 400px;
+            width: 100%;
+            max-width: 600px;
+        }
+        .nav-link {
+            transition: color 0.3s;
+        }
+        .nav-link:hover {
+            color: #fbbf24; /* Warm Accent - Amber 400 */
+        }
+        .stat-card {
+            background-color: #ffffff;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .value-breakdown-card {
+            background: white;
+            border-left: 4px solid #3b82f6; /* Professional Blue */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .value-breakdown-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <nav class="bg-slate-800 text-white sticky top-0 z-50 shadow-md">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="font-bold text-xl">SAD</div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#oportunidade" class="nav-link">A Oportunidade</a>
+                <a href="#ativos" class="nav-link">Os Nossos Ativos</a>
+                <a href="#valorizacao" class="nav-link">Matriz de Valor</a>
+                <a href="#parceria" class="nav-link">A Parceria</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="bg-slate-900 text-white py-20 px-6">
+        <div class="container mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-black uppercase">Mais do que um Patrocínio.</h1>
+            <h2 class="text-3xl md:text-5xl font-bold text-amber-400">Uma Plataforma de Marketing.</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-slate-300">Aceda a uma comunidade apaixonada e a um público digital massivo. Veja como um investimento no Sport Algés e Dafundo se traduz num retorno claro e mensurável.</p>
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+                <div class="stat-card bg-slate-800">
+                    <div id="counter-athletes" class="text-5xl font-bold text-white">2.000</div>
+                    <div class="text-slate-400 mt-2">Atletas e as suas Famílias</div>
+                </div>
+                <div class="stat-card bg-slate-800">
+                    <div id="counter-followers" class="text-5xl font-bold text-white">45.000</div>
+                    <div class="text-slate-400 mt-2">Seguidores na Nossa Rede Digital</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto p-6 md:p-10 space-y-20">
+
+        <section id="oportunidade" class="text-center">
+            <h2 class="text-3xl font-bold text-slate-800">A Interseção de Oportunidades</h2>
+            <p class="mt-2 max-w-3xl mx-auto">O Sport Algés e Dafundo posiciona-se na confluência de três macrotendências do mercado, criando uma proposta de valor única para os nossos parceiros.</p>
+            <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6 bg-white rounded-lg shadow-sm">
+                    <div class="text-3xl font-bold text-blue-600">10%</div>
+                    <h3 class="font-semibold mt-2">Mercado em Expansão</h3>
+                    <p class="text-sm mt-1 text-slate-600">O mercado publicitário português está a crescer, projetando atingir 880M€, com o digital a liderar a expansão.</p>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-sm">
+                    <div class="text-3xl font-bold text-blue-600">26%</div>
+                    <h3 class="font-semibold mt-2">Domínio das Redes Sociais</h3>
+                    <p class="text-sm mt-1 text-slate-600">O investimento em redes sociais é o que mais cresce, validando o nosso principal canal de comunicação.</p>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-sm">
+                    <span class="text-3xl font-bold text-blue-600">➔</span>
+                    <h3 class="font-semibold mt-2">Autenticidade Comunitária</h3>
+                    <p class="text-sm mt-1 text-slate-600">As marcas procuram cada vez mais o *goodwill* gerado pelo apoio a comunidades locais (*grassroots*), onde a nossa "tribo desportiva" reside.</p>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="ativos">
+            <h2 class="text-3xl font-bold text-slate-800 text-center">Os Nossos Ativos: Quantidade e Qualidade</h2>
+            <p class="mt-2 max-w-3xl mx-auto text-center">O nosso valor assenta em dois pilares: um alcance digital massivo e uma comunidade com uma afinidade inigualável.</p>
+
+            <div class="mt-12 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="order-2 lg:order-1">
+                    <h3 class="text-2xl font-bold text-slate-800">O Capital Digital: Alcance Mensurável</h3>
+                    <p class="mt-2 text-slate-600">Os nossos 45.000 seguidores não são apenas um número. Representam um canal de comunicação direto, que valorizamos usando a metodologia de Valor Equivalente em Publicidade (VEP). Comparamos o custo de um anúncio connosco versus o mercado, demonstrando o nosso valor premium.</p>
+                    <p class="mt-4 text-sm text-slate-500">O gráfico demonstra porque o nosso CPM (Custo por Mil Impressões) justificado de **30€** é um investimento mais inteligente: oferece um público-alvo de nicho com uma confiança muito superior à da publicidade genérica, a um custo competitivo face aos publishers de topo.</p>
+                </div>
+                <div class="order-1 lg:order-2 chart-container">
+                    <canvas id="cpmChart"></canvas>
+                </div>
+            </div>
+
+            <div class="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-bold text-slate-800">O Capital Comunitário: O "Multiplicador de Goodwill"</h3>
+                    <p class="mt-2 text-slate-600">O nosso ativo mais valioso é a nossa "tribo desportiva" de 2.000 atletas e as suas famílias. A associação a esta comunidade, unida por paixão e lealdade, transfere valores positivos para a sua marca de uma forma que a publicidade tradicional não consegue.</p>
+                    <ul class="mt-4 space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-3 mt-1">✔</span>
+                            <div>
+                                <h4 class="font-semibold">Transferência de Lealdade</h4>
+                                <p class="text-sm text-slate-600">Estudos mostram que a identificação dos fãs com a sua equipa se traduz em atitudes positivas e maior intenção de compra dos produtos do patrocinador.</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-blue-500 mr-3 mt-1">✔</span>
+                            <div>
+                                <h4 class="font-semibold">Imagem de Marca e Goodwill</h4>
+                                <p class="text-sm text-slate-600">Alinhe a sua marca com valores de saúde, disciplina e envolvimento local, gerando uma perceção positiva que impulsiona o negócio.</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex justify-center">
+                    <img src="https://placehold.co/500x350/e2e8f0/334155?text=Comunidade+Unida" alt="Ilustração da comunidade do clube" class="rounded-lg shadow-md">
+                </div>
+            </div>
+        </section>
+        
+        <hr>
+
+        <section id="valorizacao" class="text-center">
+            <h2 class="text-3xl font-bold text-slate-800">A Matriz de Valor: Um Retorno Transparente</h2>
+            <p class="mt-2 max-w-3xl mx-auto">Analisamos o nosso pacote "Patrocinador Principal" para demonstrar como cada contrapartida contribui para um valor de mercado total que excede largamente o investimento.</p>
+
+            <div class="my-10 p-8 bg-white rounded-lg shadow-lg max-w-3xl mx-auto">
+                <p class="text-lg text-slate-600">Valor de Mercado Total do Pacote:</p>
+                <div id="total-value" class="text-7xl font-black text-blue-600 my-2">€0</div>
+                <p class="text-slate-500">Este valor representa a soma de todas as contrapartidas, incluindo um prémio de 20% pela exclusividade e associação central à marca.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-left">
+                <div class="value-breakdown-card p-5 rounded-lg" data-value="20000">
+                    <h4 class="font-bold">Logo no Equipamento (Peito)</h4>
+                    <p class="text-2xl font-bold text-blue-500">€20.000</p>
+                    <p class="text-xs text-slate-500 mt-1">2.000 atletas x €10/atleta</p>
+                </div>
+                <div class="value-breakdown-card p-5 rounded-lg" data-value="10000">
+                    <h4 class="font-bold">Publicidade Estática (Banners)</h4>
+                    <p class="text-2xl font-bold text-blue-500">€10.000</p>
+                    <p class="text-xs text-slate-500 mt-1">Comparativo com 4 outdoors anuais</p>
+                </div>
+                <div class="value-breakdown-card p-5 rounded-lg" data-value="6300">
+                    <h4 class="font-bold">24 Publicações Digitais</h4>
+                    <p class="text-2xl font-bold text-blue-500">€6.300</p>
+                    <p class="text-xs text-slate-500 mt-1">Baseado no VEP com CPM de 30€</p>
+                </div>
+                <div class="value-breakdown-card p-5 rounded-lg" data-value="3000">
+                    <h4 class="font-bold">Destaque no Website</h4>
+                    <p class="text-2xl font-bold text-blue-500">€3.000</p>
+                    <p class="text-xs text-slate-500 mt-1">Comparativo com banner anual em publisher</p>
+                </div>
+                 <div class="value-breakdown-card p-5 rounded-lg" data-value="6000">
+                    <h4 class="font-bold">Presença em Newsletters</h4>
+                    <p class="text-2xl font-bold text-blue-500">€6.000</p>
+                    <p class="text-xs text-slate-500 mt-1">12 envios x €500 (Custo por contacto qualificado)</p>
+                </div>
+                <div class="value-breakdown-card p-5 rounded-lg" data-value="15000">
+                    <h4 class="font-bold">Naming Right de Evento Anual</h4>
+                    <p class="text-2xl font-bold text-blue-500">€15.000</p>
+                    <p class="text-xs text-slate-500 mt-1">Valor dos direitos de propriedade intelectual</p>
+                </div>
+                 <div class="value-breakdown-card p-5 rounded-lg" data-value="7000">
+                    <h4 class="font-bold">2 Ações de Ativação</h4>
+                    <p class="text-2xl font-bold text-blue-500">€7.000</p>
+                    <p class="text-xs text-slate-500 mt-1">Custo de oportunidade de criar eventos de raiz</p>
+                </div>
+                 <div class="value-breakdown-card p-5 rounded-lg" data-value="4000">
+                    <h4 class="font-bold">Direitos de Hospitalidade</h4>
+                    <p class="text-2xl font-bold text-blue-500">€4.000</p>
+                    <p class="text-xs text-slate-500 mt-1">Valor de ferramenta de CRM e networking</p>
+                </div>
+            </div>
+        </section>
+
+        <hr>
+
+        <section id="parceria">
+            <h2 class="text-3xl font-bold text-slate-800 text-center">A Nossa Promessa: Uma Parceria Ativa</h2>
+            <p class="mt-2 max-w-3xl mx-auto text-center">Não vendemos apenas espaço. Oferecemos uma parceria estratégica para garantir que o seu investimento gera o máximo retorno.</p>
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6 bg-white rounded-lg shadow-sm text-center">
+                    <h3 class="font-bold text-xl">Consultoria</h3>
+                    <p class="text-sm mt-2 text-slate-600">Trabalhamos consigo para alinhar os seus objetivos de negócio com os nossos ativos, desenvolvendo um plano de ativação anual personalizado.</p>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-sm text-center">
+                    <h3 class="font-bold text-xl">Flexibilidade</h3>
+                    <p class="text-sm mt-2 text-slate-600">Utilizamos a nossa matriz de valor para construir pacotes personalizados que se ajustam às suas necessidades e orçamento específicos.</p>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-sm text-center">
+                    <h3 class="font-bold text-xl">Transparência</h3>
+                    <p class="text-sm mt-2 text-slate-600">Fornecemos relatórios de cumprimento detalhados, com métricas e evidências visuais, para que possa medir e justificar o seu ROI.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-800 text-white mt-20">
+        <div class="container mx-auto p-10 text-center">
+            <h3 class="text-2xl font-bold">Vamos Construir Valor Juntos.</h3>
+            <p class="mt-2 max-w-xl mx-auto text-slate-300">Contacte-nos para explorar como uma parceria com o Sport Algés e Dafundo pode impulsionar a sua marca.</p>
+            <a href="mailto:parcerias@alges.pt" class="mt-6 inline-block bg-amber-400 text-slate-900 font-bold py-3 px-8 rounded-lg hover:bg-amber-300 transition-colors">Iniciar Conversa</a>
+        </div>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        function animateCounter(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                element.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString('pt-PT');
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+
+        const observeElement = (elementId, callback, options = { threshold: 0.5 }) => {
+            const element = document.getElementById(elementId);
+            if (!element) return;
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        callback(element);
+                        observer.unobserve(element);
+                    }
+                });
+            }, options);
+            observer.observe(element);
+        };
+
+        observeElement('counter-athletes', el => animateCounter(el, 0, 2000, 1500));
+        observeElement('counter-followers', el => animateCounter(el, 0, 45000, 1500));
+        observeElement('total-value', el => animateCounter(el, 0, 85560, 2000));
+        
+        const cpmCtx = document.getElementById('cpmChart')?.getContext('2d');
+        if (cpmCtx) {
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                  return label.join(' ');
+                }
+                return label;
+            };
+
+            const chartData = {
+                labels: ['CPM Genérico (Redes Sociais)', 'CPM Justificado (Algés)', 'CPM Premium (Publishers)'],
+                datasets: [{
+                    label: 'Custo por Mil Impressões (€)',
+                    data: [10, 30, 95],
+                    backgroundColor: [
+                        '#94a3b8', // Slate 400
+                        '#fbbf24', // Amber 400
+                        '#334155'  // Slate 700
+                    ],
+                    borderColor: [
+                        '#94a3b8',
+                        '#fbbf24',
+                        '#334155'
+                    ],
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            };
+
+            const chartOptions = {
+                type: 'bar',
+                data: chartData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: { title: tooltipTitleCallback },
+                            backgroundColor: '#1e293b',
+                            titleColor: '#f8fafc',
+                            bodyColor: '#cbd5e1',
+                            padding: 10,
+                            cornerRadius: 4,
+                            displayColors: false,
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: { color: '#e2e8f0' },
+                            ticks: {
+                                callback: function(value) { return '€' + value; },
+                                color: '#475569'
+                            }
+                        },
+                        y: {
+                            grid: { display: false },
+                            ticks: { color: '#334155', font: { weight: '600' } }
+                        }
+                    }
+                }
+            };
+            
+            observeElement('cpmChart', () => new Chart(cpmCtx, chartOptions));
+        }
+    });
+    </script>
+
+</body>
+</html>
