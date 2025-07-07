@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raio-X da Audiência | Sport Algés e Dafundo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Slate 50 */
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 40vh;
+            max-height: 350px;
+            width: 100%;
+        }
+        .doughnut-chart-container {
+            position: relative;
+            margin: auto;
+            height: 35vh;
+            max-height: 300px;
+            width: 100%;
+            max-width: 300px;
+        }
+        .stat-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .info-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            border-left: 4px solid #3b82f6;
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <div class="container mx-auto p-6 md:p-10">
+        
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-black uppercase text-slate-900">Raio-X da Nossa Audiência</h1>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">Uma análise detalhada da comunidade Sport Algés e Dafundo: o ativo mais valioso que oferecemos aos nossos parceiros.</p>
+        </header>
+
+        <section id="overview" class="mb-16">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="stat-card border-t-4 border-blue-500">
+                    <p class="text-5xl font-extrabold text-blue-600">6.500+</p>
+                    <h2 class="mt-2 text-xl font-bold">Pessoas na Comunidade</h2>
+                    <p class="text-sm text-slate-500 mt-1">1.871 atletas e uma média de 2.5 familiares envolvidos.</p>
+                </div>
+                <div class="stat-card border-t-4 border-green-500">
+                    <p class="text-5xl font-extrabold text-green-600">16,6%</p>
+                    <h2 class="mt-2 text-xl font-bold">Crescimento de Sócios</h2>
+                    <p class="text-sm text-slate-500 mt-1">Aumento de sócios ativos em 2024, demonstrando vitalidade e relevância.</p>
+                </div>
+                <div class="stat-card border-t-4 border-amber-500">
+                    <p class="text-5xl font-extrabold text-amber-600">21.000+</p>
+                    <h2 class="mt-2 text-xl font-bold">Sócios em Sistema</h2>
+                    <p class="text-sm text-slate-500 mt-1">Uma vasta base de dados histórica com enorme potencial de comunicação.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="persona" class="mb-16 p-8 bg-slate-800 text-white rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center text-amber-400 mb-2">A Persona-Tipo: "A Família Algés"</h2>
+            <p class="text-center max-w-2xl mx-auto text-slate-300 mb-8">Para compreender a nossa audiência, criámos um perfil que representa o núcleo da nossa comunidade: uma família multi-geracional, com elevado poder de compra e valores bem definidos.</p>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div class="doughnut-chart-container">
+                    <canvas id="personaChart"></canvas>
+                </div>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="font-bold text-lg">Perfil Demográfico e Psicográfico</h3>
+                        <ul class="mt-2 space-y-2 text-slate-300">
+                            <li class="flex items-center"><span class="text-amber-400 mr-2">✔</span> <strong>Localização:</strong> Elevada concentração em Oeiras e Lisboa.</li>
+                            <li class="flex items-center"><span class="text-amber-400 mr-2">✔</span> <strong>Classe Social:</strong> Média-Alta / Alta.</li>
+                            <li class="flex items-center"><span class="text-amber-400 mr-2">✔</span> <strong>Poder de Compra:</strong> Elevado, com capacidade de investimento.</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-lg">Valores e Estilo de Vida</h3>
+                        <ul class="mt-2 space-y-2 text-slate-300">
+                            <li class="flex items-center"><span class="text-amber-400 mr-2">✔</span> <strong>Educação Premium:</strong> Priorizam e investem na formação de excelência.</li>
+                            <li class="flex items-center"><span class="text-amber-400 mr-2">✔</span> <strong>Saúde e Desporto:</strong> Estilo de vida ativo e preocupação com o bem-estar.</li>
+                            <li class="flex items-center"><span class="text-amber-400 mr-2">✔</span> <strong>Envolvimento Familiar:</strong> Altamente participativos nas atividades dos filhos.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW SECTION: Spending Habits -->
+        <section id="spending" class="mb-16">
+            <h2 class="text-3xl font-bold text-center text-slate-900 mb-2">Onde Investem o seu Tempo e Dinheiro?</h2>
+            <p class="text-center max-w-2xl mx-auto text-slate-600 mb-8">O estilo de vida da "Família Algés" traduz-se em hábitos de consumo específicos e de elevado valor, alinhados com marcas premium e serviços de qualidade.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="info-card">
+                    <h3 class="font-bold text-lg">Viagens e Lazer</h3>
+                    <p class="text-sm mt-1 text-slate-600">Investem em férias familiares, escapadinhas de fim de semana e experiências culturais e gastronómicas.</p>
+                </div>
+                <div class="info-card">
+                    <h3 class="font-bold text-lg">Tecnologia e Gadgets</h3>
+                    <p class="text-sm mt-1 text-slate-600">São "early adopters" de tecnologia que otimiza o seu dia-a-dia, desde smartphones de topo a domótica.</p>
+                </div>
+                <div class="info-card">
+                    <h3 class="font-bold text-lg">Subscrições Premium</h3>
+                    <p class="text-sm mt-1 text-slate-600">Valorizam a conveniência de serviços de streaming, imprensa digital, ginásios e clubes de lazer.</p>
+                </div>
+                <div class="info-card">
+                    <h3 class="font-bold text-lg">Automóveis e Mobilidade</h3>
+                    <p class="text-sm mt-1 text-slate-600">Priorizam a segurança e o conforto, com uma forte tendência para veículos familiares de gama superior e elétricos.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW SECTION: Brand Values -->
+        <section id="brand-values" class="mb-16">
+            <h2 class="text-3xl font-bold text-center text-slate-900 mb-2">O que Valorizam numa Marca?</h2>
+            <p class="text-center max-w-2xl mx-auto text-slate-600 mb-8">A decisão de compra desta audiência vai além do preço. É influenciada por um conjunto de valores que refletem as suas próprias prioridades.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="info-card border-green-500">
+                    <h3 class="font-bold text-lg">Qualidade e Confiança</h3>
+                    <p class="text-sm mt-1 text-slate-600">Procuram produtos e serviços duradouros, de marcas com reputação e que oferecem um excelente apoio ao cliente.</p>
+                </div>
+                <div class="info-card border-green-500">
+                    <h3 class="font-bold text-lg">Sustentabilidade</h3>
+                    <p class="text-sm mt-1 text-slate-600">Têm uma consciência ambiental crescente, preferindo marcas com práticas sustentáveis e responsabilidade social.</p>
+                </div>
+                <div class="info-card border-green-500">
+                    <h3 class="font-bold text-lg">Experiência e Exclusividade</h3>
+                    <p class="text-sm mt-1 text-slate-600">Valorizam experiências de compra personalizadas, acesso a eventos exclusivos e serviços que os fazem sentir especiais.</p>
+                </div>
+                <div class="info-card border-green-500">
+                    <h3 class="font-bold text-lg">Conveniência e Eficiência</h3>
+                    <p class="text-sm mt-1 text-slate-600">O tempo é um bem precioso. Soluções que simplificam a sua vida e otimizam as suas rotinas são altamente valorizadas.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="modalities" class="mb-16">
+            <h2 class="text-3xl font-bold text-center text-slate-900 mb-2">Segmentação por Modalidades</h2>
+            <p class="text-center max-w-2xl mx-auto text-slate-600 mb-8">A nossa diversidade de modalidades permite aos parceiros comunicar com nichos específicos, desde a alta competição à formação e lazer.</p>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="chart-container">
+                    <canvas id="modalitiesChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- NEW SECTION: The Opportunity -->
+        <section id="opportunity" class="mb-16 p-8 bg-blue-600 text-white rounded-xl shadow-lg">
+            <h2 class="text-3xl font-bold text-center mb-4">A Oportunidade para a sua Marca</h2>
+            <p class="text-center max-w-3xl mx-auto text-slate-200 mb-8">Patrocinar o Sport Algés e Dafundo não é apenas publicidade. É uma plataforma de negócio que oferece:</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-blue-700 p-4 rounded-lg">
+                    <h3 class="font-semibold text-amber-300">Acesso a Decisores</h3>
+                    <p class="text-sm mt-1">Comunicação direta com um público de elevado poder de compra, que toma as decisões de consumo do agregado familiar.</p>
+                </div>
+                <div class="bg-blue-700 p-4 rounded-lg">
+                    <h3 class="font-semibold text-amber-300">Associação a um Estilo de Vida</h3>
+                    <p class="text-sm mt-1">Alinhe a sua marca com os valores de sucesso, saúde, família e educação que a nossa comunidade representa e procura.</p>
+                </div>
+                <div class="bg-blue-700 p-4 rounded-lg">
+                    <h3 class="font-semibold text-amber-300">Lealdade e Confiança</h3>
+                    <p class="text-sm mt-1">Beneficie da transferência de goodwill. O apoio ao clube é visto como apoio à comunidade, gerando uma afinidade que a publicidade não compra.</p>
+                </div>
+                <div class="bg-blue-700 p-4 rounded-lg">
+                    <h3 class="font-semibold text-amber-300">Plataforma de Lançamento</h3>
+                    <p class="text-sm mt-1">Utilize o nosso ecossistema para lançar novos produtos, recolher feedback valioso e gerar leads qualificados num ambiente de confiança.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="qualitative-value">
+            <h2 class="text-3xl font-bold text-center text-slate-900 mb-2">O Valor Intangível: Porque a Parceria Funciona</h2>
+            <p class="text-center max-w-2xl mx-auto text-slate-600 mb-8">Para além dos números, a associação ao Sport Algés e Dafundo oferece benefícios qualitativos que amplificam o impacto de qualquer patrocínio.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-6 bg-white rounded-lg shadow-md text-center border-t-4 border-blue-500">
+                    <h3 class="font-bold text-xl">Associação à Excelência</h3>
+                    <p class="text-sm mt-2 text-slate-600">Ligue a sua marca a um historial de sucesso, campeões nacionais e atletas olímpicos. O nosso ADN é a performance e a ambição.</p>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-md text-center border-t-4 border-green-500">
+                    <h3 class="font-bold text-xl">Confiança Institucional</h3>
+                    <p class="text-sm mt-2 text-slate-600">Somos uma instituição de utilidade pública com gestão estável e parceiros de referência como a C.M. Oeiras e o Comité Olímpico de Portugal.</p>
+                </div>
+                <div class="p-6 bg-white rounded-lg shadow-md text-center border-t-4 border-amber-500">
+                    <h3 class="font-bold text-xl">Legado e Visão</h3>
+                    <p class="text-sm mt-2 text-slate-600">Fundado em 1915, somos uma instituição centenária. A sua marca associa-se a uma história de sucesso, resiliência e futuro.</p>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    const personaCtx = document.getElementById('personaChart')?.getContext('2d');
+    if (personaCtx) {
+        new Chart(personaCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Atletas (Jovens)', 'Pais (35-50 anos)', 'Avós (60-80 anos)'],
+                datasets: [{
+                    label: 'Composição da Comunidade',
+                    data: [48, 35, 17],
+                    backgroundColor: [
+                        '#3b82f6', // Blue 500
+                        '#fbbf24', // Amber 400
+                        '#475569'  // Slate 600
+                    ],
+                    borderColor: '#1e293b', // Slate 800
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#cbd5e1', // Slate 300
+                            padding: 15,
+                            font: {
+                                size: 14
+                            }
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+    }
+
+    const modalitiesCtx = document.getElementById('modalitiesChart')?.getContext('2d');
+    if (modalitiesCtx) {
+        new Chart(modalitiesCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Natação', 'Ginástica', 'Basquetebol', 'Judo', 'Outras', 'Vela'],
+                datasets: [{
+                    label: 'Número de Praticantes',
+                    data: [827, 433, 252, 179, 146, 34],
+                    backgroundColor: '#3b82f6',
+                    borderColor: '#2563eb',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'y',
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#e2e8f0' // Slate 200
+                        },
+                        ticks: {
+                           color: '#475569' // Slate 600
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#1e293b', // Slate 800
+                            font: {
+                                size: 14,
+                                weight: '600'
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+});
+</script>
+
+</body>
+</html>
