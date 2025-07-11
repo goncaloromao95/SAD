@@ -29,7 +29,7 @@ function App() {
   const [error, setError] = useState(null);
 
   // State for active tab in the main App component, passed down to SponsorshipCRM
-  const [activeTab, setActiveTab] = useState('inicio'); // Changed default active tab to 'inicio'
+  const [activeTab, setActiveTab] = useState('inicio');
 
 
   useEffect(() => {
@@ -107,11 +107,12 @@ function App() {
             </p>
           )}
           <nav className="flex flex-col space-y-2">
-            <TabButton label="Início" tabId="inicio" activeTab={activeTab} setActiveTab={setActiveTab} /> {/* Renamed Página Principal to Início */}
-            <TabButton label="Projetos" tabId="dashboard" activeTab={activeTab} setActiveTab={setActiveTab} />
+            <TabButton label="Início" tabId="inicio" activeTab={activeTab} setActiveTab={setActiveTab} />
+            <TabButton label="Leads" tabId="dashboard" activeTab={activeTab} setActiveTab={setActiveTab} /> {/* Renamed Dashboard to Leads */}
             <TabButton label="Contactos" tabId="contactList" activeTab={activeTab} setActiveTab={setActiveTab} />
-            <TabButton label="Clientes" tabId="clientes" activeTab={activeTab} setActiveTab={setActiveTab} /> {/* Renamed Database to Clientes */}
+            <TabButton label="Clientes" tabId="clientes" activeTab={activeTab} setActiveTab={setActiveTab} />
             <TabButton label="Agenda" tabId="overview" activeTab={activeTab} setActiveTab={setActiveTab} />
+            <TabButton label="Sponsorship" tabId="benefits" activeTab={activeTab} setActiveTab={setActiveTab} /> {/* Renamed Benefits to Sponsorship */}
             <TabButton label="Modelos de Contrato" tabId="contractTemplates" activeTab={activeTab} setActiveTab={setActiveTab} />
           </nav>
         </div>
@@ -147,6 +148,7 @@ function SponsorshipCRM({ activeTab, setActiveTab }) { // Receive props
   const [contactForActivity, setContactForActivity] = useState(null);
   const [showEmailModal, setShowEmailModal] = useState(false); // New state for email modal
   const [contactForEmail, setContactForEmail] = useState(null); // New state for contact in email modal
+  const [sponsorshipTiers, setSponsorshipTiers] = useState([]); // New state for sponsorship tiers
 
 
   // Negotiation phases
@@ -232,7 +234,7 @@ function SponsorshipCRM({ activeTab, setActiveTab }) { // Receive props
 
 <p>Este Contrato de Patrocínio ("Contrato") é celebrado em {{DATA_ATUAL}} entre:</p>
 
-<p>1.  <strong>Sport Algés e Dafundo</strong> (doravante "Patrocinado"), com sede em Avenida Combatentes da Grande Guerra, 88, 1495-035 Algés, Portugal, e NIF 500276668.</p>
+<p>1.  <strong>Sport Algés e Dafundo</strong> (doravante "Patrocinado"), com sede in Avenida Combatentes da Grande Guerra, 88, 1495-035 Algés, Portugal, e NIF 500276668.</p>
 
 <p>E</p>
 
@@ -312,6 +314,29 @@ Próxima Reunião Agendada: {{DATA_REUNIAO}}</p>
       console.error("Erro ao obter atividades:", error);
     });
 
+    // New: Fetch sponsorship tiers
+    const sponsorshipTiersDocRef = doc(db, `artifacts/${appId}/users/${userId}/sponsorshipTiers`, 'packages');
+    const unsubscribeTiers = onSnapshot(sponsorshipTiersDocRef, (docSnap) => {
+      if (docSnap.exists()) {
+        setSponsorshipTiers(docSnap.data().tiers || []);
+      } else {
+        // Set default tiers if none exist
+        setSponsorshipTiers([
+          { name: "Ouro 🥇", benefits: "Logotipo em destaque, 10 posts em redes sociais, stand 5x5m", value: 100000, duration: "1 ano", limit: 1 },
+          { name: "Prata 🥈", benefits: "Logotipo visível, 5 posts em redes sociais, stand 3x3m", value: 50000, duration: "1 ano", limit: 2 },
+          { name: "Bronze 🥉", benefits: "Menção em redes sociais, logotipo em lista", value: 10000, duration: "1 ano", limit: 5 },
+        ]);
+        // Also save defaults to Firestore if they don't exist
+        setDoc(sponsorshipTiersDocRef, { tiers: [
+          { name: "Ouro 🥇", benefits: "Logotipo em destaque, 10 posts em redes sociais, stand 5x5m", value: 100000, duration: "1 ano", limit: 1 },
+          { name: "Prata 🥈", benefits: "Logotipo visível, 5 posts em redes sociais, stand 3x3m", value: 50000, duration: "1 ano", limit: 2 },
+          { name: "Bronze 🥉", benefits: "Menção em redes sociais, logotipo em lista", value: 10000, duration: "1 ano", limit: 5 },
+        ]}, { merge: true });
+      }
+    }, (error) => {
+      console.error("Erro ao obter níveis de patrocínio:", error);
+    });
+
 
     // Fetch contract template
     const templateDocRef = doc(db, `artifacts/${appId}/users/${userId}/contractTemplates`, 'mainTemplate');
@@ -330,6 +355,7 @@ Próxima Reunião Agendada: {{DATA_REUNIAO}}</p>
     return () => {
       unsubscribeContacts();
       unsubscribeActivities(); // Cleanup activities listener
+      unsubscribeTiers(); // Cleanup tiers listener
       unsubscribeTemplate();
     }; // Cleanup on unmount
   }, [db, userId]);
@@ -393,6 +419,19 @@ Próxima Reunião Agendada: {{DATA_REUNIAO}}</p>
       setContactForActivity(null);
     } catch (e) {
       console.error("Erro ao adicionar atividade:", e);
+    }
+  };
+
+  const handleUpdateSponsorshipTiers = async (updatedTiers) => {
+    if (!db || !userId) return;
+    try {
+      const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+      const sponsorshipTiersDocRef = doc(db, `artifacts/${appId}/users/${userId}/sponsorshipTiers`, 'packages');
+      await setDoc(sponsorshipTiersDocRef, { tiers: updatedTiers }, { merge: true });
+      alert('Níveis de patrocínio guardados com sucesso!');
+    } catch (e) {
+      console.error("Erro ao guardar níveis de patrocínio:", e);
+      alert('Erro ao guardar níveis de patrocínio.');
     }
   };
 
@@ -504,8 +543,8 @@ Próxima Reunião Agendada: {{DATA_REUNIAO}}</p>
 
   return (
     <div className="flex-grow p-4 bg-white rounded-l-xl md:rounded-l-none md:rounded-tl-xl shadow-2xl md:shadow-none">
-      {activeTab === 'inicio' && ( // Changed to 'inicio'
-        <MainPage contacts={contacts} activities={activities} leadManagers={leadManagers} /> /* Pass leadManagers */
+      {activeTab === 'inicio' && (
+        <MainPage contacts={contacts} activities={activities} leadManagers={leadManagers} />
       )}
 
       {activeTab === 'dashboard' && ( // This is now 'Projetos'
@@ -526,7 +565,8 @@ Próxima Reunião Agendada: {{DATA_REUNIAO}}</p>
               onCancel={() => setShowAddForm(false)}
               negotiationPhases={negotiationPhases}
               leadManagers={leadManagers}
-              industryList={industryList} /* Pass industryList */
+              industryList={industryList}
+              sponsorshipTiers={sponsorshipTiers} /* Pass sponsorshipTiers */
             />
           )}
 
@@ -563,9 +603,9 @@ Próxima Reunião Agendada: {{DATA_REUNIAO}}</p>
                   isEditing={editingContact && editingContact.id === contact.id}
                   negotiationPhases={negotiationPhases}
                   leadManagers={leadManagers}
-                  setEditingContact={setEditingContact} // Pass setEditingContact to allow cancelling edit from card
-                  onGenerateContract={generateContractForContact} // Pass generate contract function
-                  onScheduleActivity={() => { setContactForActivity(contact); setShowActivityModal(true); }} // Pass function to open activity modal
+                  setEditingContact={setEditingContact}
+                  onGenerateContract={generateContractForContact}
+                  onScheduleActivity={() => { setContactForActivity(contact); setShowActivityModal(true); }}
                 />
               ))}
             </div>
@@ -573,11 +613,11 @@ Próxima Reunião Agendada: {{DATA_REUNIAO}}</p>
         </>
       )}
 
-      {activeTab === 'contactList' && ( // This is now 'Contactos'
+      {activeTab === 'contactList' && (
         <ContactListView contacts={contacts} leadManagers={leadManagers} filterLeadManager={filterLeadManager} setFilterLeadManager={setFilterLeadManager} industryList={industryList} filterIndustry={filterIndustry} setFilterIndustry={setFilterIndustry} />
       )}
 
-      {activeTab === 'clientes' && ( // Changed to 'clientes'
+      {activeTab === 'clientes' && (
         <Database
           contacts={contacts}
           activities={activities}
@@ -591,12 +631,23 @@ Próxima Reunião Agendada: {{DATA_REUNIAO}}</p>
           setContactForActivity={setContactForActivity}
           negotiationPhases={negotiationPhases}
           leadManagers={leadManagers}
-          industryList={industryList} /* Pass industryList */
+          industryList={industryList}
+          sponsorshipTiers={sponsorshipTiers} /* Pass sponsorshipTiers */
         />
       )}
 
-      {activeTab === 'overview' && ( // This is now 'Agenda'
+      {activeTab === 'overview' && (
         <Overview contacts={contacts} negotiationPhases={negotiationPhases} activities={activities} />
+      )}
+
+      {activeTab === 'benefits' && ( /* New BenefitsManagement component */
+        <BenefitsManagement
+          sponsorshipTiers={sponsorshipTiers}
+          onUpdateSponsorshipTiers={handleUpdateSponsorshipTiers}
+          contacts={contacts} /* Pass contacts to BenefitsManagement */
+          allContacts={contacts} /* Pass all contacts for assignment dropdown */
+          onUpdateContact={handleUpdateContact} /* Pass onUpdateContact for assigning tiers */
+        />
       )}
 
       {activeTab === 'contractTemplates' && (
@@ -633,13 +684,13 @@ Próxima Reunião Agendada: {{DATA_REUNIAO}}</p>
 }
 
 // Main Page Component
-function MainPage({ contacts, activities, leadManagers }) { // Receive leadManagers
+function MainPage({ contacts, activities, leadManagers }) {
   const today = new Date();
   const todayString = today.toLocaleDateString('pt-PT', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
   const todayMeetings = activities.filter(activity => {
     if (!activity.activityDateTime) return false;
-    const activityDate = new Date(activity.activityDateTime.toDate()); // Convert Firestore Timestamp to Date
+    const activityDate = new Date(activity.activityDateTime.toDate());
     return activityDate.getDate() === today.getDate() &&
            activityDate.getMonth() === today.getMonth() &&
            activityDate.getFullYear() === today.getFullYear();
@@ -649,12 +700,11 @@ function MainPage({ contacts, activities, leadManagers }) { // Receive leadManag
   const alerts = [];
   const oneWeekAgo = new Date();
   oneWeekAgo.setDate(today.getDate() - 7);
-  oneWeekAgo.setHours(0, 0, 0, 0); // Normalize to start of day
+  oneWeekAgo.setHours(0, 0, 0, 0);
 
   contacts.forEach(contact => {
     const contactActivities = activities.filter(act => act.contactId === contact.id);
 
-    // Sort activities by date to find latest (past) and next (future)
     const sortedActivities = contactActivities.sort((a, b) => new Date(b.activityDateTime.toDate()) - new Date(a.activityDateTime.toDate()));
     const latestPastActivity = sortedActivities.find(act => new Date(act.activityDateTime.toDate()) <= today);
     const nextFutureActivity = contactActivities.find(act => new Date(act.activityDateTime.toDate()) > today);
@@ -674,12 +724,11 @@ function MainPage({ contacts, activities, leadManagers }) { // Receive leadManag
       });
     }
 
-    // Future event reminders (e.g., event in next 7 days)
     if (nextFutureActivity) {
       const activityDate = new Date(nextFutureActivity.activityDateTime.toDate());
       const sevenDaysFromNow = new Date();
       sevenDaysFromNow.setDate(today.getDate() + 7);
-      sevenDaysFromNow.setHours(23, 59, 59, 999); // Normalize to end of day
+      sevenDaysFromNow.setHours(23, 59, 59, 999);
 
       if (activityDate > today && activityDate <= sevenDaysFromNow) {
         alerts.push({
@@ -778,7 +827,7 @@ function MainPage({ contacts, activities, leadManagers }) { // Receive leadManag
   const renderBarChart = (data, title, valueFormatter, labelFormatter) => {
     const values = Object.values(data);
     const labels = Object.keys(data);
-    const maxVal = Math.max(...values); // Removed Math.max(..., 0) as values should be non-negative
+    const maxVal = Math.max(...values);
     const chartHeight = 150;
     const barWidth = 20;
     const barSpacing = 10;
@@ -791,7 +840,6 @@ function MainPage({ contacts, activities, leadManagers }) { // Receive leadManag
           <svg width={chartWidth} height={chartHeight + 30}>
             {/* Bars */}
             {values.map((val, index) => {
-              // Ensure barHeight is 0 if maxVal is 0 to avoid NaN
               const barHeight = maxVal === 0 ? 0 : (val / maxVal) * chartHeight;
               const x = index * (barWidth + barSpacing);
               const y = chartHeight - barHeight;
@@ -877,7 +925,7 @@ function MainPage({ contacts, activities, leadManagers }) { // Receive leadManag
             <ul className="list-disc pl-5 text-gray-600">
               {todayMeetings.map(meeting => (
                 <li key={meeting.id} className="mb-2">
-                  <span className="font-semibold">{new Date(meeting.activityDateTime.toDate()).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span> - {meeting.activityType} com {contacts.find(c => c.id === meeting.contactId)?.name || 'Contacto Desconhecido'} ({contacts.find(c => c.id === meeting.contactId)?.company || 'Empresa Desconhecida'})
+                  <span className="font-semibold">{new Date(meeting.activityDateTime.toDate()).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span> - {contacts.find(c => c.id === meeting.contactId)?.name || 'Contacto Desconhecido'} ({contacts.find(c => c.id === meeting.contactId)?.company || 'Empresa Desconhecida'})
                 </li>
               ))}
             </ul>
@@ -963,8 +1011,204 @@ function MainPage({ contacts, activities, leadManagers }) { // Receive leadManag
   );
 }
 
+// Benefits Management Component (New)
+function BenefitsManagement({ sponsorshipTiers, onUpdateSponsorshipTiers, contacts, onUpdateContact }) { // Removed allContacts, using contacts directly
+  const [tiers, setTiers] = useState(sponsorshipTiers);
+
+  useEffect(() => {
+    setTiers(sponsorshipTiers);
+  }, [sponsorshipTiers]);
+
+  const handleTierChange = (index, field, value) => {
+    const newTiers = [...tiers];
+    newTiers[index][field] = value;
+    setTiers(newTiers);
+  };
+
+  const handleSaveTiers = () => {
+    onUpdateSponsorshipTiers(tiers);
+  };
+
+  const getTierTagColor = (tierName) => {
+    switch (tierName) {
+      case "Ouro 🥇": return "bg-yellow-400 text-yellow-900"; // Golden
+      case "Prata 🥈": return "bg-gray-400 text-gray-900";   // Silver
+      case "Bronze 🥉": return "bg-orange-400 text-orange-900"; // Bronze/Copper
+      default: return "bg-gray-200 text-gray-700";
+    }
+  };
+
+  const handleAssignClientToTier = (tierName, contactId) => {
+    const selectedTier = tiers.find(t => t.name === tierName);
+    const selectedClient = contacts.find(c => c.id === contactId);
+
+    if (selectedTier && selectedClient) {
+      // Check if client is already assigned to this tier
+      if (selectedClient.sponsorshipTierName === tierName) {
+        alert(`${selectedClient.name} já está atribuído ao pacote ${tierName}.`);
+        return;
+      }
+
+      // Check if the tier limit has been reached
+      const currentClientsInTier = contacts.filter(c => c.sponsorshipTierName === tierName).length;
+      if (selectedTier.limit && currentClientsInTier >= selectedTier.limit) {
+        alert(`O pacote ${tierName} já atingiu o limite de ${selectedTier.limit} clientes.`);
+        return;
+      }
+
+      // Remove client from any other tier they might be assigned to
+      const previousTierClient = contacts.find(c => c.id === contactId && c.sponsorshipTierName && c.sponsorshipTierName !== tierName);
+      if (previousTierClient) {
+        onUpdateContact(previousTierClient.id, {
+          sponsorshipTierName: '',
+          sponsorshipTierBenefits: '',
+          sponsorshipTierValue: '',
+          sponsorshipTierDuration: ''
+        });
+      }
+
+      // Assign the new tier to the client
+      onUpdateContact(contactId, {
+        sponsorshipTierName: selectedTier.name,
+        sponsorshipTierBenefits: selectedTier.benefits,
+        sponsorshipTierValue: selectedTier.value,
+        sponsorshipTierDuration: selectedTier.duration
+      });
+    }
+  };
+
+  const handleRemoveClientFromTier = (contactId) => {
+    const clientToRemove = contacts.find(c => c.id === contactId);
+    if (clientToRemove) {
+      onUpdateContact(clientToRemove.id, {
+        sponsorshipTierName: '',
+        sponsorshipTierBenefits: '',
+        sponsorshipTierValue: '',
+        sponsorshipTierDuration: ''
+      });
+    }
+  };
+
+
+  return (
+    <div className="p-4">
+      <h2 className="text-2xl font-bold text-gray-700 mb-6">Gestão de Pacotes de Patrocínio</h2>
+
+      <div className="space-y-8">
+        {tiers.map((tier, index) => {
+          const assignedClients = contacts.filter(contact => contact.sponsorshipTierName === tier.name);
+          const currentCount = assignedClients.length;
+          const limitReached = tier.limit && currentCount >= tier.limit;
+          const slotColor = limitReached ? 'bg-red-200 text-red-800' : 'bg-green-200 text-green-800'; // Red if full, green otherwise
+          // Filter out clients already assigned to this tier or other tiers if limit is reached
+          const unassignedClients = contacts.filter(contact => !contact.sponsorshipTierName || contact.sponsorshipTierName === tier.name);
+
+
+          return (
+            <div key={tier.name} className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+              <h3 className="text-xl font-bold text-gray-800 mb-4">
+                Pacote {tier.name}
+                {tier.limit && (
+                  <span className={`ml-3 px-3 py-1 rounded-full text-xs font-semibold ${slotColor}`}>
+                    {currentCount} / {tier.limit} Clientes
+                  </span>
+                )}
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                  <label htmlFor={`benefits-${index}`} className="block text-gray-700 text-sm font-bold mb-2">Contrapartidas:</label>
+                  <textarea
+                    id={`benefits-${index}`}
+                    value={tier.benefits}
+                    onChange={(e) => handleTierChange(index, 'benefits', e.target.value)}
+                    rows="3"
+                    className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                  ></textarea>
+                </div>
+                <div>
+                  <label htmlFor={`value-${index}`} className="block text-gray-700 text-sm font-bold mb-2">Valor (€):</label>
+                  <input
+                    type="number"
+                    id={`value-${index}`}
+                    value={tier.value}
+                    onChange={(e) => handleTierChange(index, 'value', parseFloat(e.target.value) || 0)}
+                    className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                    step="1000"
+                  />
+                </div>
+              </div>
+              <div className="mb-4">
+                <label htmlFor={`duration-${index}`} className="block text-gray-700 text-sm font-bold mb-2">Duração do Contrato:</label>
+                <input
+                  type="text"
+                  id={`duration-${index}`}
+                  value={tier.duration}
+                  onChange={(e) => handleTierChange(index, 'duration', e.target.value)}
+                  className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                />
+              </div>
+
+              {/* Client Assignment Section */}
+              <div className="mt-6 p-4 bg-gray-100 rounded-lg border border-gray-200">
+                <h4 className="text-md font-semibold text-gray-700 mb-3">Atribuir Clientes a este Pacote:</h4>
+                <div className="flex items-center space-x-2">
+                  <select
+                    id={`assign-client-${index}`}
+                    onChange={(e) => handleAssignClientToTier(tier.name, e.target.value)}
+                    className="shadow appearance-none border rounded-lg py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 flex-grow"
+                    value="" // Reset select after assignment
+                  >
+                    <option value="">-- Selecione um Cliente --</option>
+                    {unassignedClients.map(client => (
+                      // Only show clients not currently assigned to *any* tier, or those already assigned to *this* tier
+                      <option
+                        key={client.id}
+                        value={client.id}
+                        disabled={limitReached && client.sponsorshipTierName !== tier.name} // Disable if limit reached and client not already in this tier
+                      >
+                        {client.name} ({client.company}) {client.sponsorshipTierName && `(Atribuído a ${client.sponsorshipTierName})`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                {assignedClients.length > 0 && (
+                  <div className="mt-4">
+                    <h4 className="text-md font-semibold text-gray-700 mb-2">Clientes Atribuídos:</h4>
+                    <ul className="list-disc pl-5 space-y-1 text-sm text-gray-600">
+                      {assignedClients.map(client => (
+                        <li key={client.id} className="flex justify-between items-center">
+                          {client.name} ({client.company})
+                          <button
+                            onClick={() => handleRemoveClientFromTier(client.id)}
+                            className="ml-2 px-2 py-1 bg-red-100 text-red-700 rounded-md text-xs hover:bg-red-200 transition"
+                          >
+                            Remover
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <div className="flex justify-end mt-6">
+        <button
+          onClick={handleSaveTiers}
+          className="bg-[#BFFF00] text-gray-900 font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#BFFF00] focus:ring-opacity-75" /* Lime green button */
+        >
+          Guardar Níveis de Patrocínio
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // Database Component (Renamed from ClientArea)
-function Database({ contacts, activities, onUpdateContact, onAddActivity, negotiationPhases, leadManagers, setEditingContact, editingContact, showActivityModal, setShowActivityModal, contactForActivity, setContactForActivity, industryList }) {
+function Database({ contacts, activities, onUpdateContact, onAddActivity, negotiationPhases, leadManagers, setEditingContact, editingContact, showActivityModal, setShowActivityModal, contactForActivity, setContactForActivity, industryList, sponsorshipTiers }) { // Added sponsorshipTiers
   const [selectedContactId, setSelectedContactId] = useState('');
   const selectedContact = contacts.find(c => c.id === selectedContactId);
   const clientActivities = selectedContact ? activities.filter(act => act.contactId === selectedContact.id).sort((a, b) => new Date(b.activityDateTime.toDate()) - new Date(a.activityDateTime.toDate())) : [];
@@ -982,9 +1226,19 @@ function Database({ contacts, activities, onUpdateContact, onAddActivity, negoti
     }
   };
 
+  // Helper to get tier color for the tag
+  const getTierTagColor = (tierName) => {
+    switch (tierName) {
+      case "Ouro 🥇": return "bg-yellow-400 text-yellow-900"; // Golden
+      case "Prata 🥈": return "bg-gray-400 text-gray-900";   // Silver
+      case "Bronze 🥉": return "bg-orange-400 text-orange-900"; // Bronze/Copper
+      default: return "bg-gray-200 text-gray-700";
+    }
+  };
+
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold text-gray-700 mb-6">Database</h2> {/* Renamed title */}
+      <h2 className="text-2xl font-bold text-gray-700 mb-6">Clientes</h2> {/* Renamed title */}
 
       <div className="mb-6">
         <label htmlFor="selectClient" className="block text-gray-700 text-sm font-bold mb-2">Selecionar Cliente:</label>
@@ -1004,7 +1258,14 @@ function Database({ contacts, activities, onUpdateContact, onAddActivity, negoti
       {selectedContact ? (
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold text-gray-800">Ficha do Cliente: {selectedContact.name}</h3>
+            <h3 className="text-xl font-bold text-gray-800">
+              Ficha do Cliente: {selectedContact.name}
+              {selectedContact.sponsorshipTierName && (
+                <span className={`ml-3 px-3 py-1 rounded-full text-xs font-semibold ${getTierTagColor(selectedContact.sponsorshipTierName)}`}>
+                  Patrocinador {selectedContact.sponsorshipTierName}
+                </span>
+              )}
+            </h3>
             <div className="flex gap-2">
               <button
                 onClick={handleEditClient}
@@ -1032,7 +1293,8 @@ function Database({ contacts, activities, onUpdateContact, onAddActivity, negoti
                 onCancel={() => setEditingContact(null)}
                 negotiationPhases={negotiationPhases}
                 leadManagers={leadManagers}
-                industryList={industryList} /* Pass industryList */
+                industryList={industryList}
+                sponsorshipTiers={sponsorshipTiers} /* Pass sponsorshipTiers */
               />
             </div>
           )}
@@ -1050,6 +1312,14 @@ function Database({ contacts, activities, onUpdateContact, onAddActivity, negoti
             <p><strong>Gerente da Lead:</strong> {selectedContact.leadManager || 'N/A'}</p>
             <p><strong>Próxima Reunião (Antigo):</strong> {selectedContact.meetingDateTime ? new Date(selectedContact.meetingDateTime).toLocaleString('pt-PT', { dateStyle: 'short', timeStyle: 'short' }) : 'N/A'}</p>
             <p className="md:col-span-2"><strong>Notas:</strong> {selectedContact.notes || 'N/A'}</p>
+            {selectedContact.sponsorshipTierName && (
+              <>
+                <p className="md:col-span-2"><strong>Pacote de Patrocínio:</strong> {selectedContact.sponsorshipTierName}</p>
+                <p className="md:col-span-2"><strong>Contrapartidas do Pacote:</strong> {selectedContact.sponsorshipTierBenefits || 'N/A'}</p>
+                <p><strong>Valor do Pacote:</strong> {selectedContact.sponsorshipTierValue ? parseFloat(selectedContact.sponsorshipTierValue).toLocaleString('pt-PT', { style: 'currency', currency: 'EUR' }) : 'N/A'}</p>
+                <p><strong>Duração do Contrato:</strong> {selectedContact.sponsorshipTierDuration || 'N/A'}</p>
+              </>
+            )}
           </div>
 
           <h4 className="text-xl font-bold text-gray-700 mb-4">Atividades Agendadas</h4>
@@ -1089,7 +1359,7 @@ function Overview({ contacts, negotiationPhases, activities }) {
         <button
           onClick={() => setViewMode('map')}
           className={`py-2 px-5 rounded-l-lg font-semibold transition-colors duration-200 ${
-            viewMode === 'map' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            viewMode === 'map' ? 'bg-[#BFFF00] text-gray-900 shadow-md' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' /* Lime green for active */
           }`}
         >
           Mapa de Negociações
@@ -1097,7 +1367,7 @@ function Overview({ contacts, negotiationPhases, activities }) {
         <button
           onClick={() => setViewMode('calendar')}
           className={`py-2 px-5 rounded-r-lg font-semibold transition-colors duration-200 ${
-            viewMode === 'calendar' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            viewMode === 'calendar' ? 'bg-[#BFFF00] text-gray-900 shadow-md' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' /* Lime green for active */
           }`}
         >
           Calendário Semanal
@@ -1115,7 +1385,7 @@ function Overview({ contacts, negotiationPhases, activities }) {
 
 
 // Contact Form Component
-function ContactForm({ onSubmit, onCancel, initialData = {}, negotiationPhases, leadManagers, industryList }) {
+function ContactForm({ onSubmit, onCancel, initialData = {}, negotiationPhases, leadManagers, industryList = [], sponsorshipTiers = [] }) { // Added sponsorshipTiers = []
   const [name, setName] = useState(initialData.name || '');
   const [company, setCompany] = useState(initialData.company || '');
   const [email, setEmail] = useState(initialData.email || '');
@@ -1125,11 +1395,31 @@ function ContactForm({ onSubmit, onCancel, initialData = {}, negotiationPhases, 
   const [nif, setNif] = useState(initialData.nif || '');
   const [taxAddress, setTaxAddress] = useState(initialData.taxAddress || '');
   const [industry, setIndustry] = useState(initialData.industry || industryList[0]); // New state for industry
+  const [leadStatus, setLeadStatus] = useState(initialData.leadStatus || 'Cold'); // New state for lead status
   const [negotiationValue, setNegotiationValue] = useState(initialData.negotiationValue || '');
   const [negotiationPhase, setNegotiationPhase] = useState(initialData.negotiationPhase || negotiationPhases[0]);
   const [leadManager, setLeadManager] = useState(initialData.leadManager || leadManagers[0]);
+  const [sponsorshipTierName, setSponsorshipTierName] = useState(initialData.sponsorshipTierName || ''); // New state for selected tier name
+  const [sponsorshipTierBenefits, setSponsorshipTierBenefits] = useState(initialData.sponsorshipTierBenefits || ''); // New state for selected tier benefits
+  const [sponsorshipTierValue, setSponsorshipTierValue] = useState(initialData.sponsorshipTierValue || ''); // New state for selected tier value
+  const [sponsorshipTierDuration, setSponsorshipTierDuration] = useState(initialData.sponsorshipTierDuration || ''); // New state for selected tier duration
   const [meetingDateTime, setMeetingDateTime] = useState(initialData.meetingDateTime || ''); // This is for the *next* meeting, not a historical activity
   const [notes, setNotes] = useState(initialData.notes || '');
+
+  // Effect to update sponsorship tier details when a tier is selected
+  useEffect(() => {
+    const selectedTier = sponsorshipTiers.find(tier => tier.name === sponsorshipTierName);
+    if (selectedTier) {
+      setSponsorshipTierBenefits(selectedTier.benefits);
+      setSponsorshipTierValue(selectedTier.value);
+      setSponsorshipTierDuration(selectedTier.duration);
+    } else {
+      setSponsorshipTierBenefits('');
+      setSponsorshipTierValue('');
+      setSponsorshipTierDuration('');
+    }
+  }, [sponsorshipTierName, sponsorshipTiers]);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -1137,11 +1427,17 @@ function ContactForm({ onSubmit, onCancel, initialData = {}, negotiationPhases, 
       alert("Por favor, preencha os campos obrigatórios: Nome, Empresa e Email.");
       return;
     }
-    onSubmit({ name, company, email, phone, linkedin, socialName, nif, taxAddress, industry, negotiationValue, negotiationPhase, leadManager, meetingDateTime, notes });
+    onSubmit({
+      name, company, email, phone, linkedin, socialName, nif, taxAddress, industry, leadStatus, // Include leadStatus
+      negotiationValue, negotiationPhase, leadManager, meetingDateTime, notes,
+      sponsorshipTierName, sponsorshipTierBenefits, sponsorshipTierValue, sponsorshipTierDuration // Include new tier fields
+    });
   };
 
+  const leadStatusOptions = ["Cold", "Warm", "Hot"];
+
   return (
-    <form onSubmit={handleSubmit} className="bg-gray-50 p-6 rounded-lg shadow-inner mb-8 border border-gray-200">
+    <form onSubmit={handleSubmit} className="bg-gray-50 p-6 rounded-lg shadow-inner mb-8 border border-gray-200 w-full md:max-w-4xl mx-auto"> {/* Adjusted max-w to 4xl */}
       <h3 className="text-xl font-semibold text-gray-700 mb-4">{initialData.id ? 'Editar Contacto' : 'Adicionar Novo Contacto'}</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
@@ -1244,6 +1540,19 @@ function ContactForm({ onSubmit, onCancel, initialData = {}, negotiationPhases, 
           </select>
         </div>
         <div>
+          <label htmlFor="leadStatus" className="block text-gray-700 text-sm font-bold mb-2">Status da Lead</label>
+          <select
+            id="leadStatus"
+            value={leadStatus}
+            onChange={(e) => setLeadStatus(e.target.value)}
+            className="shadow appearance-none border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+          >
+            {leadStatusOptions.map(status => (
+              <option key={status} value={status}>{status}</option>
+            ))}
+          </select>
+        </div>
+        <div>
           <label htmlFor="negotiationValue" className="block text-gray-700 text-sm font-bold mb-2">Valor da Negociação (€)</label>
           <input
             type="number"
@@ -1280,8 +1589,10 @@ function ContactForm({ onSubmit, onCancel, initialData = {}, negotiationPhases, 
             ))}
           </select>
         </div>
+        {/* Removed Sponsorship Tier selection from contact creation/edit form */}
+        {/* This will be managed in the Sponsorship section directly */}
         <div>
-          <label htmlFor="meetingDateTime" className="block text-gray-700 text-sm font-bold mb-2">Data e Hora da Próxima Reunião (Campo Antigo)</label>
+          <label htmlFor="meetingDateTime" className="block text-gray-700 text-sm font-bold mb-2">Agendar Nova Ação</label> {/* Renamed field */}
           <input
             type="datetime-local"
             id="meetingDateTime"
@@ -1330,6 +1641,16 @@ function ContactCard({ contact, onUpdate, onDelete, onEdit, isEditing, negotiati
       case "Fechado": return "bg-green-100 text-green-800";
       case "Perdido": return "bg-red-100 text-red-800";
       default: return "bg-gray-100 text-gray-800";
+    }
+  };
+
+  // Helper to get lead status color
+  const getLeadStatusColor = (status) => {
+    switch (status) {
+      case "Cold": return "bg-blue-200 text-blue-800";
+      case "Warm": return "bg-yellow-200 text-yellow-800";
+      case "Hot": return "bg-red-200 text-red-800";
+      default: return "bg-gray-200 text-gray-700";
     }
   };
 
@@ -1382,8 +1703,13 @@ function ContactCard({ contact, onUpdate, onDelete, onEdit, isEditing, negotiati
         {/* Display the negotiation phase at the top right */}
         {contact.negotiationPhase}
       </div>
+      {contact.leadStatus && (
+        <div className={`absolute top-0 left-0 mt-3 ml-3 px-3 py-1 rounded-full text-xs font-semibold ${getLeadStatusColor(contact.leadStatus)}`}> {/* Adjusted position with mt and ml */}
+          {contact.leadStatus}
+        </div>
+      )}
       {/* Display company name prominently */}
-      <h3 className="text-xl font-bold text-gray-800 mb-2">{contact.company}</h3>
+      <h3 className="text-xl font-bold text-gray-800 mt-8 mb-2">{contact.company}</h3> {/* Added mt-8 to push company name down */}
       {/* Display contact name below company name */}
       <p className="text-gray-600 mb-1">Contacto: {contact.name}</p>
 
@@ -1412,7 +1738,7 @@ function ContactCard({ contact, onUpdate, onDelete, onEdit, isEditing, negotiati
         </button>
         <button
           onClick={onEdit}
-          className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-75 text-sm"
+          className="bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-6 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-75 text-sm" /* Increased px-6 for wider button */
         >
           Editar
         </button>
@@ -1466,7 +1792,7 @@ function ContactListView({ contacts, leadManagers, filterLeadManager, setFilterL
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold text-gray-700 mb-6">Lista Completa de Contactos</h2>
+      <h2 className="text-2xl font-bold text-gray-700 mb-6">Contactos</h2> {/* Renamed title */}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
         <div>
@@ -1622,7 +1948,7 @@ function ContactListView({ contacts, leadManagers, filterLeadManager, setFilterL
                         className="p-2 rounded-full bg-[#BFFF00] text-gray-900 shadow-sm hover:bg-green-300 transition" /* Lime green button */
                       >
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
-                          <path fillRule="evenodd" d="M19.952 1.304A.75.75 0 0 0 19.232.25h-3.837a.75.75 0 0 0-.722.568l-1.876 8.154a.75.75 0 0 0 .159.792l6.49 6.49a.75.75 0 0 0 1.06 0l1.958-1.959a.75.75 0 0 0 0-1.06L20.007 2.568a.75.75 0 0 0-.055-1.264Zm-10.148 11.923 3.197 3.197a.75.75 0 0 0 1.06 0l.341-.34a.75.75 0 0 0 0-1.06l-3.196-3.197a.75.75 0 0 0-1.06 0l-.341.34a.75.75 0 0 0 0 1.06ZM3.953 16.148a.75.75 0 0 0-.723.568l-1.876 8.154a.75.75 0 0 0 .159.792l6.49 6.49a.75.75 0 0 0 1.06 0l1.958-1.959a.75.75 0 0 0 0-1.06L4.007 17.412a.75.75 0 0 0-.055-1.264Z" clipRule="evenodd" />
+                          <path fillRule="evenodd" d="M19.952 1.304A.75.75 0 0 0 19.232.25h-3.837a.75.75 0 0 0-.722.568l-1.876 8.154a.75.75 0 0 0 .159.792l6.49 6.49a.75.75 0 0 0 1.06 0l1.958-1.959a.75.75 0 0 0 0-1.06L20.007 2.568a.75.75 0 0 0-.055-1.264Z" clipRule="evenodd" />
                         </svg>
                       </button>
                     </div>
@@ -1658,6 +1984,9 @@ function NegotiationPhaseChart({ contacts, negotiationPhases }) {
     return acc;
   }, {});
 
+  // Calculate total contacts for percentage
+  const totalContacts = contacts.length;
+
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold text-gray-700 mb-6">Mapa de Negociações por Fase</h2>
@@ -1666,27 +1995,39 @@ function NegotiationPhaseChart({ contacts, negotiationPhases }) {
           Nenhum contacto para exibir no mapa de negociações.
         </p>
       ) : (
-        <div className="space-y-8">
-          {negotiationPhases.map(phase => (
-            <div key={phase} className="bg-gray-50 p-6 rounded-lg shadow-inner border border-gray-200">
-              <h3 className={`text-xl font-bold mb-4 flex items-center gap-2 ${getPhaseColorForChartTitle(phase)}`}>
-                {phase} ({contactsByPhase[phase].length})
-              </h3>
-              {contactsByPhase[phase].length === 0 ? (
-                <p className="text-gray-500 italic">Nenhum contacto nesta fase.</p>
-              ) : (
-                <ul className="list-disc pl-5 space-y-2">
-                  {contactsByPhase[phase].map(contact => (
-                    <li key={contact.id} className="text-gray-700">
-                      <span className="font-semibold">{contact.company}</span> - {contact.name} ({contact.email})
-                      {contact.leadManager && <span className="text-sm text-gray-500 ml-2">(Gerente: {contact.leadManager})</span>}
-                      {contact.meetingDateTime && <span className="text-sm text-gray-500 ml-2">(Reunião: {new Date(contact.meetingDateTime).toLocaleString('pt-PT', { dateStyle: 'short', timeStyle: 'short' })})</span>}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
+        <div className="flex flex-col items-center space-y-4"> {/* Changed to flex-col for vertical funnels */}
+          {negotiationPhases.map(phase => {
+            const phaseContacts = contactsByPhase[phase];
+            const count = phaseContacts.length;
+            const percentage = totalContacts > 0 ? (count / totalContacts) * 100 : 0;
+            const phaseColor = getPhaseColorForChartTitle(phase); // Reusing helper for consistent colors
+
+            return (
+              <div key={phase} className="w-full max-w-xl bg-gray-50 p-4 rounded-lg shadow-inner border border-gray-200">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className={`text-lg font-bold ${phaseColor}`}>
+                    {phase} ({count})
+                  </h3>
+                  <span className="text-gray-700 text-sm">{percentage.toFixed(1)}%</span>
+                </div>
+                <div className="w-full bg-gray-200 rounded-full h-4">
+                  <div
+                    className={`h-full rounded-full ${phaseColor}`}
+                    style={{ width: `${percentage}%` }}
+                  ></div>
+                </div>
+                {phaseContacts.length > 0 && (
+                  <ul className="list-disc pl-5 space-y-1 text-sm text-gray-700 mt-2">
+                    {phaseContacts.map(contact => (
+                      <li key={contact.id}>
+                        <span className="font-semibold">{contact.company}</span> - {contact.name}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
@@ -1696,12 +2037,12 @@ function NegotiationPhaseChart({ contacts, negotiationPhases }) {
 // Helper function for NegotiationPhaseChart title colors
 const getPhaseColorForChartTitle = (phase) => {
   switch (phase) {
-    case "Contacto Inicial": return "text-blue-700";
-    case "Proposta Enviada": return "text-yellow-700";
-    case "Negociação": return "text-purple-700";
-    case "Fechado": return "text-green-700";
-    case "Perdido": return "text-red-700";
-    default: return "text-gray-700";
+    case "Contacto Inicial": return "text-blue-700 bg-blue-100"; // Added bg for funnel bar
+    case "Proposta Enviada": return "text-yellow-700 bg-yellow-100"; // Added bg for funnel bar
+    case "Negociação": return "text-purple-700 bg-purple-100"; // Added bg for funnel bar
+    case "Fechado": return "text-green-700 bg-green-100"; // Added bg for funnel bar
+    case "Perdido": return "text-red-700 bg-red-100"; // Added bg for funnel bar
+    default: return "text-gray-700 bg-gray-100"; // Added bg for funnel bar
   }
 };
 
@@ -1729,10 +2070,9 @@ function WeeklyCalendar({ contacts, activities }) {
   const weekDays = getWeekDays(currentWeekStart);
 
   const activitiesByDay = weekDays.reduce((acc, day) => {
-    const dayKey = day.toISOString().split('T')[0]; // YYYY-MM-DD
-    acc[dayKey] = activities.filter(activity => {
+    acc[day.toISOString().split('T')[0]] = activities.filter(activity => {
       if (!activity.activityDateTime) return false;
-      const activityDate = new Date(activity.activityDateTime.toDate()); // Convert Firestore Timestamp to Date
+      const activityDate = new Date(activity.activityDateTime.toDate());
       return activityDate.getDate() === day.getDate() &&
              activityDate.getMonth() === day.getMonth() &&
              activityDate.getFullYear() === day.getFullYear();
@@ -1765,7 +2105,7 @@ function WeeklyCalendar({ contacts, activities }) {
       <div className="flex justify-between items-center mb-4">
         <button
           onClick={goToPreviousWeek}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+          className="bg-[#BFFF00] text-gray-900 font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#BFFF00] focus:ring-opacity-75" /* Lime green button */
         >
           Semana Anterior
         </button>
@@ -1774,7 +2114,7 @@ function WeeklyCalendar({ contacts, activities }) {
         </span>
         <button
           onClick={goToNextWeek}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+          className="bg-[#BFFF00] text-gray-900 font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-[#BFFF00] focus:ring-opacity-75" /* Lime green button */
         >
           Próxima Semana
         </button>
@@ -1799,7 +2139,7 @@ function WeeklyCalendar({ contacts, activities }) {
                   {dayActivities.map(activity => (
                     <li key={activity.id} className="text-sm text-gray-700 bg-gray-50 p-2 rounded-md">
                       <span className="font-semibold">{new Date(activity.activityDateTime.toDate()).toLocaleTimeString('pt-PT', { hour: '2-digit', minute: '2-digit' })}</span><br/>
-                      {activity.activityType} com {contacts.find(c => c.id === activity.contactId)?.name || 'Contacto Desconhecido'}
+                      {contacts.find(c => c.id === activity.contactId)?.name || 'Contacto Desconhecido'}
                     </li>
                   ))}
                 </ul>
@@ -1894,7 +2234,7 @@ function ActivityFormModal({ contact, onSubmit, onClose }) {
             />
           </div>
           <div className="mb-6">
-            <label htmlFor="notes" className="block text-gray-700 text-sm font-bold mb-2">Notas</label>
+            <label htmlFor="notes" className="block text-gray-700 text-sm font-bold mb-2">Notas da Atividade</label>
             <textarea
               id="notes"
               value={notes}
